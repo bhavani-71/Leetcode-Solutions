@@ -1,0 +1,77 @@
+LeetCode #409 - Longest Palindrome - https://leetcode.com/problems/longest-palindrome/
+
+Given a string s, return the length of the longest palindrome that can be built with those letters.
+
+Letters are case sensitive, for example, "Aa" is not considered a palindrome here.
+
+Example 1:
+Input: s = "abccccdd"
+Output: 7
+Explanation: One longest palindrome that can be built is "dccaccd", whose length is 7.
+
+Example 2:
+Input: s = "a"
+Output: 1
+
+Example 3:
+Input: s = "bb"
+Output: 2
+
+
+Explanation:
+A palindrome is a string that reads the same backward as forward. The problem asks to find the length of the longest palindrome that can be constructed by rearranging the letters of the input string. We do not need to return the palindrome itself, just its maximum possible length.
+
+For example, in "abccccdd", rearranging letters to "dccaccd" creates a palindrome of length 7.
+
+
+🪓 Brute Force Approach
+🔍 Approach:
+Generate all possible permutations of the input string.
+
+Check each permutation if it forms a palindrome.
+
+Keep track of the maximum length palindrome found.
+
+🧠 Pseudocode:
+for each permutation p of s:
+    if p is palindrome:
+        update max_length if p's length is greater
+
+⏱️ Time Complexity:
+O(n!) — factorial time due to permutations
+
+🧠 Space Complexity:
+O(n) — for storing permutations and checking palindromes
+
+
+✅ Optimized Approach Using Character Frequency Count
+
+🔍 Approach:
+Count the frequency of each character in the string.
+
+- Add all characters with even counts fully to the palindrome length since they can be symmetrically placed.
+- For characters with odd counts, add the largest even number less than their count (i.e., count - 1).
+- If there is at least one character with an odd count, add 1 to place one odd-count character in the middle of the palindrome.
+
+This leverages the property that palindromes are symmetric around the center, allowing all even-count characters to be used fully, and at most one odd-count character can appear in the middle.
+
+✅ Code Trace
+Input: s = "abccccdd"
+
+Frequency counts:
+a:1, b:1, c:4, d:2
+
+- c has even count 4 → add 4
+- d has even count 2 → add 2
+- a has odd count 1 → add 0 (count - 1)
+- b has odd count 1 → add 0 (count - 1)
+- Since there are odd counts, add 1 for the middle character.
+
+Longest palindrome length = 4 + 2 + 0 + 0 + 1 = 7
+
+⏱️ Time Complexity:
+O(n) — single pass frequency count
+
+🧠 Space Complexity:
+O(1) — fixed character set frequency map
+

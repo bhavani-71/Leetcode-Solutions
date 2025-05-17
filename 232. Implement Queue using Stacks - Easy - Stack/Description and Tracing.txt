@@ -1,0 +1,95 @@
+LeetCode #232 - Implement Queue using Stacks - https://leetcode.com/problems/implement-queue-using-stacks/
+
+Implement a first in first out (FIFO) queue using only two stacks. The implemented queue should support all the functions of a normal queue (push, pop, peek, and empty).
+
+Example:
+
+Input:
+["MyQueue", "push", "push", "peek", "pop", "empty"]
+[[], [1], [2], [], [], []]
+
+Output:
+[null, null, null, 1, 1, false]
+
+Explanation:
+MyQueue myQueue = new MyQueue();
+myQueue.push(1); // queue is: [1]
+myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+myQueue.peek();  // return 1
+myQueue.pop();   // return 1, queue is [2]
+myQueue.empty(); // return false
+
+🪓 Brute Force Approach
+🔍 Approach:
+Use a single list to simulate a queue by appending elements and removing from the front (pop(0)).
+
+This is simple but popping from front is O(n) due to shifting elements.
+
+🧠 Pseudocode:
+queue = []
+push(x):
+    queue.append(x)
+pop():
+    return queue.pop(0)
+peek():
+    return queue[0]
+empty():
+    return len(queue) == 0
+
+⏱️ Time Complexity:
+push: O(1)
+pop: O(n) due to element shifting
+peek: O(1)
+empty: O(1)
+
+🧠 Space Complexity:
+O(n) — storing all elements
+
+✅ Optimized Approach Using Two Stacks
+🔍 Approach:
+Maintain two stacks:
+- stack_in: for enqueue operation (push)
+- stack_out: for dequeue operation (pop and peek)
+
+When stack_out is empty, pour all elements from stack_in to stack_out by popping from stack_in and pushing onto stack_out. This reverses the order, making the oldest element accessible on top of stack_out.
+
+pop() and peek() operate on stack_out, ensuring O(1) amortized time.
+
+✅ Code Trace
+
+Operations:
+push(1), push(2), peek(), pop(), empty()
+
+Initial state:
+stack_in = []
+stack_out = []
+
+🪓 push(1):
+stack_in = [1]
+stack_out = []
+
+🪓 push(2):
+stack_in = [1, 2]
+stack_out = []
+
+🪓 peek():
+stack_out empty, transfer elements from stack_in to stack_out:
+stack_in pops 2 -> stack_out = [2]
+stack_in pops 1 -> stack_out = [2, 1]
+stack_in = []
+peek returns stack_out[-1] = 1
+
+🪓 pop():
+pop stack_out -> 1
+stack_out = [2]
+
+🪓 empty():
+stack_in = []
+stack_out = [2]
+returns False
+
+⏱️ Time Complexity:
+Each element is moved at most once from stack_in to stack_out, so amortized O(1) per operation.
+
+🧠 Space Complexity:
+O(n) — storing all elements in the two stacks combined

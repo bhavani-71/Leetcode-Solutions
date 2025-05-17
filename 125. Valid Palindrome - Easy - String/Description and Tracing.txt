@@ -1,0 +1,92 @@
+LeetCode #125 - Valid Palindrome - https://leetcode.com/problems/valid-palindrome/
+
+Given a string s, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+Example 1:
+Input: s = "A man, a plan, a canal: Panama"
+Output: true
+Explanation: After removing non-alphanumeric characters and ignoring cases, it reads "amanaplanacanalpanama" which is a palindrome.
+
+Example 2:
+Input: s = "race a car"
+Output: false
+Explanation: After removing non-alphanumeric characters and ignoring cases, it reads "raceacar" which is not a palindrome.
+
+Example 3:
+Input: s = " "
+Output: true
+Explanation: An empty string or string with only non-alphanumeric characters is considered a palindrome.
+
+🪓 Brute Force Approach
+
+🔍 Approach:
+- Remove all non-alphanumeric characters from the string.
+- Convert the string to lowercase.
+- Check if the cleaned string is equal to its reverse.
+
+🧠 Pseudocode:
+
+cleaned = ""
+FOR char IN s:
+    IF char is alphanumeric:
+        cleaned += lowercase(char)
+
+RETURN cleaned == reversed(cleaned)
+
+⏱️ Time Complexity:
+O(n) — single pass to clean and compare
+
+🧠 Space Complexity:
+O(n) — storing cleaned string
+
+✅ Optimized Two-Pointer Approach
+
+🔍 Approach:
+- Use two pointers starting at the beginning and end of the string.
+- Move pointers inward skipping non-alphanumeric characters.
+- Compare characters case-insensitively.
+- If any mismatch, return False immediately.
+- If pointers cross without mismatches, return True.
+
+⏱️ Time Complexity:
+O(n) — single traversal with two pointers
+
+🧠 Space Complexity:
+O(1) — no extra string storage, only pointers used
+
+✅ Code Trace
+
+Input: s = "A man, a plan, a canal: Panama"
+
+Initial State:
+start = 0, end = 29 (length of s - 1)
+
+🔁 Iteration 1: 🪓0
+start points to 'A' (alphanumeric)  
+end points to 'a' (alphanumeric)  
+Compare 'a' and 'A' (case insensitive) → match  
+start -> 1, end -> 28
+
+🔁 Iteration 2: 🪓1
+start points to ' ' (non-alphanumeric) → skip to next  
+start -> 2 (points to 'm')  
+end points to 'm' (alphanumeric)  
+Compare 'm' and 'm' → match  
+start -> 3, end -> 27
+
+🔁 Iteration 3: 🪓2
+start points to 'a' (alphanumeric)  
+end points to 'a' (alphanumeric)  
+Compare 'a' and 'a' → match  
+start -> 4, end -> 26
+
+🔁 Iteration 4: 🪓3
+start points to 'n'  
+end points to 'n'  
+Match → continue  
+start -> 5, end -> 25
+
+... (continues skipping spaces/punctuation and comparing letters) ...
+
+✅ Final Output:
+True

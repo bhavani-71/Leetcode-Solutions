@@ -1,0 +1,121 @@
+LeetCode #21 - Merge Two Sorted Lists - https://leetcode.com/problems/merge-two-sorted-lists/
+
+You are given the heads of two sorted linked lists list1 and list2.
+
+Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+Return the head of the merged linked list.
+
+Example 1:
+Input: list1 = [1,2,4], list2 = [1,3,4]
+Output: [1,1,2,3,4,4]
+
+Example 2:
+Input: list1 = [], list2 = []
+Output: []
+
+Example 3:
+Input: list1 = [], list2 = [0]
+Output: [0]
+
+🪓 Brute Force Approach
+
+🔍 Approach:
+1. Traverse both input linked lists and collect all values into a Python list.
+2. Sort this combined list of node values.
+3. Construct a new linked list from the sorted values.
+
+🧠 Pseudocode:
+
+values = []
+WHILE list1 is not None:
+    add list1.val to values
+    list1 = list1.next
+
+WHILE list2 is not None:
+    add list2.val to values
+    list2 = list2.next
+
+sort values
+
+Create new dummy ListNode head
+current = head
+
+FOR value in values:
+    current.next = new ListNode(value)
+    current = current.next
+
+RETURN head.next
+
+⏱️ Time Complexity:
+O(n log n) — due to the sort operation
+
+🧠 Space Complexity:
+O(n) — storing all node values in a list
+
+
+✅ Optimized Solution (Two-pointer Merge with Constant Space)
+
+🔍 Approach:
+This solution uses a two-pointer technique to traverse both sorted linked lists simultaneously and merge them into one in a sorted manner.
+
+A dummy node acts as the starting point to simplify pointer manipulations. A `current` pointer tracks the last node added to the merged list.
+
+At each step:
+- Compare the values of the current nodes from both lists.
+- Append the smaller node to the merged list.
+- Move the pointer forward on the list from which the node was taken.
+
+Once either list is exhausted, attach the remaining part of the other list directly, since it's already sorted.
+
+This avoids the need for any extra memory beyond a few pointers.
+
+⏱️ Time Complexity:
+O(n) — each node from both lists is visited exactly once
+
+🧠 Space Complexity:
+O(1) — in-place pointer manipulation, no extra storage used
+
+
+✅ Code Trace
+
+Input:
+list1 = [1, 2, 4]
+list2 = [1, 3, 4]
+
+🔁 Iteration 1:
+list1.val = 1, list2.val = 1  
+→ 1 <= 1 → attach list2  
+→ current = 1  
+→ list2 → 3
+
+🔁 Iteration 2:
+list1.val = 1, list2.val = 3  
+→ 1 < 3 → attach list1  
+→ current = 1  
+→ list1 → 2
+
+🔁 Iteration 3:
+list1.val = 2, list2.val = 3  
+→ 2 < 3 → attach list1  
+→ current = 2  
+→ list1 → 4
+
+🔁 Iteration 4:
+list1.val = 4, list2.val = 3  
+→ 4 > 3 → attach list2  
+→ current = 3  
+→ list2 → 4
+
+🔁 Iteration 5:
+list1.val = 4, list2.val = 4  
+→ 4 <= 4 → attach list2  
+→ current = 4  
+→ list2 → None
+
+🔁 Iteration 6:
+list2 is empty  
+→ attach remaining list1 (4)
+
+✅ Final Output:
+[1, 1, 2, 3, 4, 4]

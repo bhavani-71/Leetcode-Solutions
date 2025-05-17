@@ -1,0 +1,124 @@
+LeetCode #20 - Valid Parentheses - https://leetcode.com/problems/valid-parentheses/
+
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+3. Every closing bracket has a corresponding opening bracket of the same type.
+
+Example 1:
+Input: s = "()"
+Output: true
+
+Example 2:
+Input: s = "()[]{}"
+Output: true
+
+Example 3:
+Input: s = "(]"
+Output: false
+
+Example 4:
+Input: s = "([])"
+Output: true
+
+🪓 Brute Force Approach
+
+🔍 Approach:
+We repeatedly remove adjacent valid bracket pairs: `"()"`, `"[]"`, or `"{}"`.
+
+This loop continues until:
+- The string becomes empty → valid string ✅  
+- OR no more replacements are possible → invalid string ❌
+
+🧠 Pseudocode:
+
+WHILE s contains "()" or "{}" or "[]":
+    Replace all "()" in s with ""
+    Replace all "{}" in s with ""
+    Replace all "[]" in s with ""
+
+IF s is empty:
+    RETURN True
+ELSE:
+    RETURN False
+
+⏱️ Time Complexity:
+O(n²) — Each pass is O(n), and we could repeat this up to n times in worst case
+
+🧠 Space Complexity:
+O(n) — Due to string operations creating new strings repeatedly
+
+✅ Code Trace (Brute Force)
+
+Input: s = "([])"
+
+🔁 Iteration 1:
+s = "([])"
+→ Contains "[]" → Remove → s = "()"
+
+🔁 Iteration 2:
+s = "()"
+→ Contains "()" → Remove → s = ""
+
+Final result: ✅ Valid (string is empty)
+
+✅ Optimized Solution Using Stack
+
+🔍 Approach:
+Use a stack to track open brackets.
+
+- When we see an **opening bracket**, push it to the stack.
+- When we see a **closing bracket**, check if the top of the stack matches.
+  - If not, return `False`
+  - Else, pop the stack
+- If the stack is empty at the end → Valid
+
+🧠 Pseudocode:
+
+stack = empty list  
+hashmap = {')': '(', '}': '{', ']': '['}
+
+FOR each character c in s:
+    IF c is a closing bracket:
+        IF stack is empty OR stack[-1] != hashmap[c]:
+            RETURN False
+        ELSE:
+            pop from stack
+    ELSE:
+        push c to stack
+
+RETURN True if stack is empty, else False
+
+⏱️ Time Complexity:
+O(n) — Each character is pushed and popped at most once
+
+🧠 Space Complexity:
+O(n) — Stack may hold all opening brackets in the worst case
+
+✅ Code Trace (Stack Approach)
+
+Input: s = "([])"
+
+Initial State:
+stackOfOpen = []
+hashmap = {')': '(', '}': '{', ']': '['}
+
+🔁 Iteration 1: i = '('  
+→ Opening bracket → push to stack → stack = ['(']
+
+🔁 Iteration 2: i = '['  
+→ Opening bracket → push to stack → stack = ['(', '[']
+
+🔁 Iteration 3: i = ']'  
+→ Closing bracket  
+→ Top of stack = '[' → Matches hashmap[']']  
+→ Pop stack → stack = ['(']
+
+🔁 Iteration 4: i = ')'  
+→ Closing bracket  
+→ Top of stack = '(' → Matches hashmap[')']  
+→ Pop stack → stack = []
+
+✅ Final Check: stack is empty → Valid ✅

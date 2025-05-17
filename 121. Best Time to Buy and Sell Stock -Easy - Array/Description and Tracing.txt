@@ -1,0 +1,110 @@
+LeetCode #121 - Best Time to Buy and Sell Stock - https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+Example 1:
+Input: prices = [7,1,5,3,6,4]
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6 - 1 = 5.
+
+Example 2:
+Input: prices = [7,6,4,3,1]
+Output: 0
+Explanation: No transaction is done, so max profit = 0.
+
+🪓 Brute Force Approach
+
+🔍 Approach:
+Check every pair of days (i, j) where i < j.
+
+Calculate profit = prices[j] - prices[i].
+
+Track the maximum profit found.
+
+🧠 Pseudocode:
+
+max_profit = 0
+
+FOR i in range(len(prices)):
+    FOR j in range(i+1, len(prices)):
+        profit = prices[j] - prices[i]
+        IF profit > max_profit:
+            max_profit = profit
+
+RETURN max_profit
+
+⏱️ Time Complexity:
+O(n²) — nested loops checking all pairs of days
+
+🧠 Space Complexity:
+O(1) — only variables to track max profit and profit calculation
+
+✅ Optimized Solution (Single Pass)
+
+🔍 Approach:
+Use two variables: min_price and max_profit.
+
+- Traverse the list of prices once.
+- Update min_price to the lowest price encountered so far.
+- Calculate potential profit as current price - min_price.
+- Update max_profit if potential profit is greater.
+
+This approach ensures a single pass with constant space.
+
+⏱️ Time Complexity:
+O(n) — single traversal of the list
+
+🧠 Space Complexity:
+O(1) — only two variables used
+
+✅ Code Trace
+
+Input:
+prices = [7, 1, 5, 3, 6, 4]
+
+🔁 Iteration 1:
+min_price = 7  
+max_profit = 0  
+Current price = 1
+
+min_price updated to 1  
+max_profit remains 0 (1 - 1 = 0)
+
+🔁 Iteration 2:
+min_price = 1  
+max_profit = 0  
+Current price = 5
+
+Profit = 5 - 1 = 4  
+max_profit updated to 4
+
+🔁 Iteration 3:
+min_price = 1  
+max_profit = 4  
+Current price = 3
+
+Profit = 3 - 1 = 2  
+max_profit remains 4
+
+🔁 Iteration 4:
+min_price = 1  
+max_profit = 4  
+Current price = 6
+
+Profit = 6 - 1 = 5  
+max_profit updated to 5
+
+🔁 Iteration 5:
+min_price = 1  
+max_profit = 5  
+Current price = 4
+
+Profit = 4 - 1 = 3  
+max_profit remains 5
+
+✅ Final Output:
+5

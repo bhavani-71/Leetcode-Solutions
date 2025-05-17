@@ -1,0 +1,109 @@
+LeetCode #206 - Reverse Linked List - https://leetcode.com/problems/reverse-linked-list/
+
+Given the head of a singly linked list, reverse the list and return the new head.
+
+---
+
+Example 1:
+Input: head = [1, 2, 3, 4, 5]
+Output: [5, 4, 3, 2, 1]
+
+Example 2:
+Input: head = [1, 2]
+Output: [2, 1]
+
+Example 3:
+Input: head = []
+Output: []
+
+---
+
+Explanation:
+A singly linked list is a linear collection of nodes, where each node points to the next node.
+
+Reversing a linked list means changing the direction of the pointers so that the last node becomes the head and all pointers reverse direction.
+
+For example, the list 1 -> 2 -> 3 -> 4 -> 5 becomes 5 -> 4 -> 3 -> 2 -> 1 after reversal.
+
+---
+
+🪓 Brute Force Approach (Conceptual)
+🔍 Approach:
+Store all node values in an array, then create a new linked list from the array in reverse order.
+
+🧠 Pseudocode:
+values = []
+while head:
+    values.append(head.val)
+    head = head.next
+
+Create new linked list from reversed(values)
+
+⏱️ Time Complexity:
+O(n)
+
+🧠 Space Complexity:
+O(n) — additional array used
+
+---
+
+✅ Optimized In-Place Iterative Approach
+🔍 Approach:
+Use two pointers, `prev` and `current`. Iterate through the list reversing the `.next` pointers as you go.
+
+At each step:
+- Save `current.next`
+- Point `current.next` to `prev`
+- Move `prev` and `current` forward
+
+When done, `prev` will be the new head.
+
+⏱️ Time Complexity:
+O(n) — one pass through the list
+
+🧠 Space Complexity:
+O(1) — constant extra space
+
+---
+
+✅ Code Trace
+Input: head = [1, 2, 3, 4, 5]
+
+Initial:
+prev = None
+current = Node(1)
+
+Step 1:
+nextn = Node(2)
+current.next = None  # 1 -> None
+prev = Node(1)
+current = Node(2)
+
+Step 2:
+nextn = Node(3)
+current.next = Node(1)  # 2 -> 1
+prev = Node(2)
+current = Node(3)
+
+Step 3:
+nextn = Node(4)
+current.next = Node(2)  # 3 -> 2
+prev = Node(3)
+current = Node(4)
+
+Step 4:
+nextn = Node(5)
+current.next = Node(3)  # 4 -> 3
+prev = Node(4)
+current = Node(5)
+
+Step 5:
+nextn = None
+current.next = Node(4)  # 5 -> 4
+prev = Node(5)
+current = None
+
+Loop ends.
+
+Return prev (Node 5) which points to the reversed list:
+5 -> 4 -> 3 -> 2 -> 1 -> None
