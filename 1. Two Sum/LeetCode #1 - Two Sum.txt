@@ -1,0 +1,86 @@
+LeetCode #1 - Two Sum
+
+Given an array of integers numbers and an integer target, return the indices of the two numbers such that they add up to the target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+
+Input:  numbers = [2, 7, 11, 15], target = 9  
+Output: [0, 1]  
+Explanation: numbers[0] + numbers[1] == 2 + 7 == 9
+
+
+🪓 Brute Force Approach
+🔍 Approach:
+Loop through all pairs of elements in the array using two nested loops.
+
+For each pair, check if their sum equals the target.
+
+If yes, return their indices.
+
+🧠 Code Logic (Pseudocode):
+
+for i in range(len(numbers)):
+    for j in range(i+1, len(numbers)):
+        if numbers[i] + numbers[j] == target:
+            return [i, j]
+
+⏱️ Time Complexity:
+O(n²) — two nested loops for all possible pairs
+
+🧠 Space Complexity:
+O(1) — no extra space used except loop variables
+
+
+
+✅ Optimized Solution Using Hash Map
+🔍 Approach:
+Use a dictionary to store values we have seen and their indices.
+
+For each number num, calculate remaining = target - num.
+
+If remaining is already in the dictionary, we found the pair.
+
+Otherwise, store num with its index in the dictionary.
+
+✅ Code Trace
+Input: numbers = [2, 7, 11, 15], target = 9
+
+Input:
+numbers = [2, 7, 11, 15]
+target = 9
+
+Initial State:
+hashmap = {}
+
+🔁 Iteration 1: i = 0
+---------------------
+numbers[i] = 2  
+remaining = 9 - 2 = 7
+
+→ 7 is NOT in hashmap  
+→ Add 2 with index 0 to hashmap
+
+hashmap = {2: 0}
+
+🔁 Iteration 2: i = 1
+---------------------
+numbers[i] = 7  
+remaining = 9 - 7 = 2
+
+→ 2 IS in hashmap (hashmap[2] = 0)  
+→ Pair found: [1, 0]  
+→ Return result
+
+✅ Final Output:  
+[1, 0]
+
+These are the indices of the numbers (7 and 2) whose sum equals the target (9).
+
+⏱️ Time Complexity:
+O(n) — single pass through the array, constant-time hashmap lookups
+
+🧠 Space Complexity:
+O(n) — storing up to n elements in the dictionary
+
