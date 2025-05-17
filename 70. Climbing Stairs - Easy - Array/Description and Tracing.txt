@@ -1,0 +1,68 @@
+LeetCode - Palindrome Linked List  
+https://leetcode.com/problems/palindrome-linked-list/
+
+🧩 Problem:  
+Given the head of a singly linked list, determine if the linked list is a palindrome.
+
+A palindrome linked list reads the same forwards and backwards.
+
+📥 Example:  
+Input: 1 -> 2 -> 2 -> 1  
+Output: True
+
+Input: 1 -> 2  
+Output: False
+
+---
+
+✅ Brute Force Approach
+
+🔍 Idea:  
+* Traverse the linked list once and push all node values onto a stack (or list).  
+* Traverse the linked list again and compare each node's value with the value popped from the stack.  
+* If all values match, the list is palindrome; otherwise, it is not.
+
+🧠 Pseudocode:  
+function isPalindrome(head):  
+ if head is None or head.next is None:  
+  return True  
+ stack = []  
+ current = head  
+ while current is not None:  
+  stack.push(current.val)  
+  current = current.next  
+ current = head  
+ while current is not None:  
+  if stack.pop() != current.val:  
+   return False  
+  current = current.next  
+ return True
+
+⏱️ Time Complexity: O(n) — traverse list twice  
+🧠 Space Complexity: O(n) — for the stack storing all node values
+
+---
+
+✅ Optimized Approach (Using Fast and Slow Pointer + Reversing Half)
+
+🔍 Explanation:  
+* Use two pointers (fast and slow) to find the middle of the list.  
+* Reverse the second half of the list.  
+* Compare the first half and reversed second half node-by-node.  
+* Restore the list (optional).  
+* Return true if all nodes match, else false.
+
+⏱️ Time Complexity: O(n) — single pass to find middle, reverse half, and compare  
+🧠 Space Complexity: O(1) — in-place reversal, no extra stack
+
+---
+
+✅ Trace Example (Partial)
+
+Input List:  
+1 -> 2 -> 2 -> 1
+
+Step 1: Find middle (slow at second 2)  
+Step 2: Reverse second half (2 -> 1 becomes 1 -> 2)  
+Step 3: Compare first half 1 -> 2 with reversed second half 1 -> 2  
+Step 4: All nodes match, so return True

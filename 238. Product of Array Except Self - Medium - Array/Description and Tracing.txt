@@ -1,0 +1,61 @@
+LeetCode #155 - Min Stack - https://leetcode.com/problems/min-stack/
+
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+Implement the MinStack class:
+
+- MinStack() initializes the stack object.
+- void push(int val) pushes the element val onto the stack.
+- void pop() removes the element on the top of the stack.
+- int top() gets the top element of the stack.
+- int getMin() retrieves the minimum element in the stack.
+
+Example:
+Input:
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+Output:
+[null,null,null,null,-3,null,0,-2]
+
+Explanation:
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> Returns -3
+minStack.pop();
+minStack.top();      --> Returns 0
+minStack.getMin();   --> Returns -2
+
+✅ Brute Force Approach
+
+🔍 Idea:
+Use a normal stack for push/pop/top. For getMin(), traverse the stack every time to find the minimum.
+
+⏱️ Time Complexity:
+- push, pop, top: O(1)
+- getMin: O(n)
+
+🧠 Space Complexity:
+O(n) — for stack
+
+✅ Optimized Approach Using Auxiliary Stack
+
+🔍 Idea:
+Use an auxiliary stack to keep track of the minimum value at each point. Push to the min_stack only if it’s the new minimum.
+
+⏱️ Time Complexity:
+O(1) — for all operations
+
+🧠 Space Complexity:
+O(n) — for main_stack and min_stack
+
+✅ Code Trace
+Operations:
+push(-2) → main_stack: [-2], min_stack: [-2]
+push(0)  → main_stack: [-2, 0], min_stack: [-2]
+push(-3) → main_stack: [-2, 0, -3], min_stack: [-2, -3]
+getMin() → -3
+pop()    → main_stack: [-2, 0], min_stack: [-2]
+top()    → 0
+getMin() → -2

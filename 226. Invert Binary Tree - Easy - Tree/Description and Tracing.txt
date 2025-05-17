@@ -1,0 +1,84 @@
+LeetCode #226 - Invert Binary Tree  
+https://leetcode.com/problems/invert-binary-tree/
+
+🧩 Problem:  
+Given the root of a binary tree, invert the tree, and return its root.
+
+Inverting a binary tree means swapping the left and right child nodes of every node in the tree.
+
+📥 Example:  
+Input:  
+    4
+   / \
+  2   7
+ / \ / \
+1  3 6  9
+
+Output:  
+    4
+   / \
+  7   2
+ / \ / \
+9  6 3  1
+
+---
+
+✅ Brute Force Approach
+
+🔍 Idea:  
+* Traverse all nodes of the tree.  
+* For each node, swap its left and right child nodes.  
+* Recursively perform this operation for all nodes.
+
+🧠 Pseudocode:  
+function invert(node):  
+    if node is None:  
+        return None  
+    swap node.left and node.right  
+    invert(node.left)  
+    invert(node.right)  
+    return node  
+
+⏱️ Time Complexity: O(n) — where n is number of nodes  
+🧠 Space Complexity: O(n) — recursion stack in worst case (skewed tree)
+
+---
+
+✅ Optimized Approach (Recursive Inversion)
+
+🔍 Explanation:  
+* Recursively invert left and right subtrees.  
+* After the recursive calls, swap the left and right children.  
+* Return the root node after inversion.
+
+This leverages depth-first traversal to invert subtrees bottom-up.
+
+⏱️ Time Complexity: O(n) — each node is visited once  
+🧠 Space Complexity: O(h) — recursion stack space where h is height of the tree (O(log n) for balanced tree, O(n) worst case)
+
+---
+
+✅ Trace Example (Partial)
+
+Input Tree:  
+    4  
+   / \  
+  2   7  
+ / \ / \  
+1  3 6  9  
+
+Step 1: Invert left subtree (2)  
+- Swap children of 2: left=3, right=1
+
+Step 2: Invert right subtree (7)  
+- Swap children of 7: left=9, right=6
+
+Step 3: Swap left and right children of root (4)  
+- left=7, right=2
+
+Output Tree:  
+    4  
+   / \  
+  7   2  
+ / \ / \  
+9  6 3  1  

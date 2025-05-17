@@ -1,0 +1,103 @@
+LeetCode - Flood Fill
+https://leetcode.com/problems/flood-fill/
+
+🧩 Problem:
+Given a 2D array representing an image, a starting pixel (sr, sc), and a new color, replace the color of the starting pixel and all connected pixels (4-directionally) having the same original color with the new color.
+
+📥 Example:
+Input:
+image = [
+  [1, 1, 1],
+  [1, 1, 0],
+  [1, 0, 1]
+]
+sr = 1, sc = 1, color = 2
+
+Output:
+[
+  [2, 2, 2],
+  [2, 2, 0],
+  [2, 0, 1]
+]
+
+---
+
+✅ Brute Force Approach
+
+🔍 Idea:
+
+* Perform DFS or BFS from the starting pixel.
+* For each pixel with the original color, change it to the new color.
+* Recursively or iteratively visit all 4-directionally connected pixels with the original color.
+
+🧠 Pseudocode:
+function floodFill(image, sr, sc, color):
+ originalColor = image[sr][sc]
+ if originalColor == color:
+  return image
+ DFS(sr, sc)
+ return image
+
+function DFS(r, c):
+ if r or c out of bounds or image[r][c] != originalColor:
+  return
+ image[r][c] = color
+ DFS(r+1, c)
+ DFS(r-1, c)
+ DFS(r, c+1)
+ DFS(r, c-1)
+
+⏱️ Time Complexity: O(m * n) — where m, n are dimensions of image
+🧠 Space Complexity: O(m * n) — recursion stack in worst case (all pixels connected)
+
+---
+
+✅ Optimized Approach (BFS Iterative)
+
+🔍 Explanation:
+
+* Use a queue to perform BFS starting from (sr, sc).
+* For each pixel dequeued, change its color and enqueue all valid 4-directionally connected pixels with the original color.
+* This prevents deep recursion and reduces stack overflow risk.
+
+⏱️ Time Complexity: O(m * n) — each pixel visited once
+🧠 Space Complexity: O(m * n) — queue size in worst case
+
+---
+
+✅ Trace Example (Partial)
+
+Input Image:
+[
+  [1, 1, 1],
+  [1, 1, 0],
+  [1, 0, 1]
+]
+
+Starting Pixel: (1,1) with original color 1
+New Color: 2
+
+Step 1: Change pixel (1,1) to 2
+Enqueue neighbors with original color 1: (0,1), (1,0)
+
+Step 2: Change pixel (0,1) to 2
+Enqueue neighbors with original color 1: (0,0), (0,2)
+
+Step 3: Change pixel (1,0) to 2
+Enqueue neighbor with original color 1: (2,0)
+
+Step 4: Change pixel (0,0) to 2
+No new neighbors with original color
+
+Step 5: Change pixel (0,2) to 2
+No new neighbors with original color
+
+Step 6: Change pixel (2,0) to 2
+No new neighbors with original color
+
+Output Image:
+[
+  [2, 2, 2],
+  [2, 2, 0],
+  [2, 0, 1]
+]

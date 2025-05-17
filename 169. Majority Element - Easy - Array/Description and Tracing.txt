@@ -1,0 +1,83 @@
+LeetCode #169 - Majority Element  
+https://leetcode.com/problems/majority-element/
+
+🧩 Problem:
+Given an array nums of size n, return the majority element.
+The majority element is the element that appears more than ⌊n / 2⌋ times.
+You may assume that the majority element always exists in the array.
+
+📥 Examples:
+Input: nums = [3,2,3]
+Output: 3
+
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+---
+
+✅ Brute Force Approach using Hash Map
+
+🔍 Idea:
+Use a dictionary (hash map) to count the frequency of each element. Return the element that appears more than n/2 times.
+
+🧠 Pseudocode:
+- Initialize an empty dictionary `frequency_map`
+- For each element `num` in nums:
+    - If num not in frequency_map:
+        - frequency_map[num] = 1
+    - Else:
+        - frequency_map[num] += 1
+- For each key, value pair in frequency_map:
+    - If value > n // 2:
+        - Return key
+
+⏱️ Time Complexity: O(n)  
+🧠 Space Complexity: O(n)
+
+---
+
+✅ Optimized Approach: Boyer-Moore Voting Algorithm
+
+🔍 Idea:
+The Boyer-Moore Voting Algorithm efficiently finds the majority element in linear time and constant space.
+
+**How it works:**
+- Use a variable `candidate` for the potential majority element and `count` to track its frequency.
+- Loop through the array:
+    - If count is 0, assign current element to `candidate`.
+    - If current element equals `candidate`, increment count.
+    - Else, decrement count.
+- The final `candidate` will be the majority element because it occurs more than n/2 times.
+
+🧠 Pseudocode:
+- Initialize: count = 0, candidate = None
+- For each number in nums:
+    - If count == 0:
+        - candidate = number
+    - If number == candidate:
+        - count += 1
+    - Else:
+        - count -= 1
+- Return candidate
+
+⏱️ Time Complexity: O(n)  
+🧠 Space Complexity: O(1)
+
+---
+
+✅ Trace of Boyer-Moore Voting Algorithm
+
+Input: [2,2,1,1,1,2,2]
+
+Step-by-step:
+
+- count = 0, candidate = None  
+- num = 2 → count = 0 → candidate = 2 → count = 1  
+- num = 2 → same → count = 2  
+- num = 1 → different → count = 1  
+- num = 1 → different → count = 0  
+- num = 1 → count = 0 → candidate = 1 → count = 1  
+- num = 2 → different → count = 0  
+- num = 2 → count = 0 → candidate = 2 → count = 1  
+
+✅ Final candidate: 2 → Output: 2

@@ -1,0 +1,62 @@
+LeetCode #283 - Move Zeroes  
+https://leetcode.com/problems/move-zeroes/
+
+🧩 Problem:
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.  
+Do this in-place without making a copy of the array.
+
+📥 Examples:
+Input: nums = [0,1,0,3,12]  
+Output: [1,3,12,0,0]
+
+Input: nums = [0]  
+Output: [0]
+
+---
+
+✅ Brute Force Approach (Using Extra Array)
+
+🔍 Idea:
+- Create a new list with non-zero elements first, then append zeroes to fill the remaining space.
+
+🧠 Pseudocode:
+- Initialize result list.
+- Append non-zero elements to it.
+- Count zeros and append them at the end.
+- Copy values back to original array.
+
+⏱️ Time Complexity: O(n)  
+🧠 Space Complexity: O(n)  
+
+---
+
+✅ Optimized In-Place Approach Using Two Pointers
+
+🔍 Idea:
+- Use a pointer (`insert_pos`) to keep track of the position where the next non-zero should be placed.
+- Traverse the array and whenever a non-zero element is encountered, swap it with the element at `insert_pos`.
+
+🧠 Pseudocode:
+- Initialize `insert_pos = 0`
+- Loop through array:
+    - If nums[i] != 0:
+        - Swap nums[insert_pos] and nums[i]
+        - Increment insert_pos
+
+⏱️ Time Complexity: O(n)  
+🧠 Space Complexity: O(1)
+
+---
+
+✅ Trace Example
+
+Input: [0, 1, 0, 3, 12]  
+Initial insert_pos = 0
+
+→ i = 0, nums[0] = 0 → Skip  
+→ i = 1, nums[1] = 1 → Swap nums[1] with nums[0] → [1, 0, 0, 3, 12], insert_pos = 1  
+→ i = 2, nums[2] = 0 → Skip  
+→ i = 3, nums[3] = 3 → Swap nums[3] with nums[1] → [1, 3, 0, 0, 12], insert_pos = 2  
+→ i = 4, nums[4] = 12 → Swap nums[4] with nums[2] → [1, 3, 12, 0, 0], insert_pos = 3  
+
+✅ Output: [1, 3, 12, 0, 0]

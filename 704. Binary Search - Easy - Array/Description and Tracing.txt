@@ -1,0 +1,66 @@
+LeetCode #704 - Binary Search  
+https://leetcode.com/problems/binary-search/
+
+🧩 Problem:
+Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, return the index of the `target` if it is in the array.  
+If not, return -1.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+📥 Examples:
+Input: nums = [-1,0,3,5,9,12], target = 9  
+Output: 4
+
+Input: nums = [-1,0,3,5,9,12], target = 2  
+Output: -1
+
+---
+
+✅ Brute Force Approach
+
+🔍 Idea:
+- Linearly scan each element in the array and check if it's equal to the target.
+
+🧠 Pseudocode:
+- Loop from index 0 to n-1:
+    - If nums[i] == target: return i
+- Return -1
+
+⏱️ Time Complexity: O(n)  
+🧠 Space Complexity: O(1)  
+
+---
+
+✅ Optimized Approach Using Binary Search
+
+🔍 Idea:
+- Since the array is sorted, we can repeatedly divide the search space in half.
+
+🧠 Conditions:
+- If middle element equals the target → return index.
+- If middle element is less than target → discard left half.
+- If middle element is greater than target → discard right half.
+
+🧠 Pseudocode:
+- Initialize `left = 0`, `right = n - 1`
+- While left ≤ right:
+    - mid = (left + right) // 2
+    - if nums[mid] == target → return mid
+    - if nums[mid] < target → search right half (`left = mid + 1`)
+    - else → search left half (`right = mid - 1`)
+- Return -1
+
+⏱️ Time Complexity: O(log n)  
+🧠 Space Complexity: O(1)
+
+---
+
+✅ Trace Example
+
+Input: nums = [-1,0,3,5,9,12], target = 9  
+Initial: left = 0, right = 5  
+
+→ mid = 2 → nums[2] = 3 < 9 → left = 3  
+→ mid = 4 → nums[4] = 9 == 9 → return 4
+
+✅ Output: 4

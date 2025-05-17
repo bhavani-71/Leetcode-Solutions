@@ -1,0 +1,78 @@
+LeetCode #383 - Ransom Note  
+🔗 https://leetcode.com/problems/ransom-note/
+
+---
+
+🧩 Problem Statement:
+
+Given two strings `ransomNote` and `magazine`, return `True` if `ransomNote` can be constructed using letters from `magazine`.  
+Each letter in `magazine` can only be used once in `ransomNote`.
+
+---
+
+💡 Example 1:  
+Input: ransomNote = "a", magazine = "b"  
+Output: False
+
+💡 Example 2:  
+Input: ransomNote = "aa", magazine = "ab"  
+Output: False
+
+💡 Example 3:  
+Input: ransomNote = "aa", magazine = "aab"  
+Output: True
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Approach:  
+- Iterate over each character in `ransomNote`.
+- For each character, look for it in `magazine`.
+- If found, remove the character from `magazine` (to simulate using it).
+- If any character is not found, return `False`.
+
+⏱️ Time Complexity: O(n * m)  
+🧠 Space Complexity: O(1)
+
+---
+
+🚀 Optimized Approach — Using Hashing (`collections.Counter`):
+
+We can use frequency counting to efficiently determine if the ransom note can be formed.
+
+**Key Idea:**  
+- Use `Counter` to count the frequency of each character in both `ransomNote` and `magazine`.
+- Check that for every character in the ransom note, the magazine has an equal or greater count.
+
+🔧 Steps:
+1. Count characters in both `ransomNote` and `magazine`.
+2. For each character in `ransomNote`, check if `magazine` has at least as many.
+3. If any character is insufficient, return `False`. Otherwise, return `True`.
+
+⏱️ Time Complexity: O(n + m)  
+🧠 Space Complexity: O(1) — assuming only lowercase English letters
+
+---
+
+🔎 Step-by-Step Code Trace (Example: ransomNote = "aa", magazine = "aab")
+
+Input:
+- ransomNote = "aa"
+- magazine = "aab"
+
+1. Count characters:
+   - `ransom_counter = {'a': 2}`
+   - `magazine_counter = {'a': 2, 'b': 1}`
+
+2. Iteration:
+   - Check character `'a'`:
+     - Needed: 2
+     - Available: 2
+     - ✅ 2 ≤ 2 → OK
+
+3. All required characters are available.
+
+✅ Final Output: True
+
+---

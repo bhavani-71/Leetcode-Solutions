@@ -1,0 +1,88 @@
+LeetCode #15 - 3Sum - https://leetcode.com/problems/3sum/
+
+Given an integer array nums, return all unique triplets [nums[i], nums[j], nums[k]] such that
+i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+Example 1:
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+
+Example 2:
+Input: nums = []
+Output: []
+
+Example 3:
+Input: nums = [0]
+Output: []
+
+Explanation:
+We want to find all unique triplets that sum to zero.
+
+🪓 Brute Force Approach
+🔍 Approach:
+Generate all possible triplets using three nested loops.
+
+Check each triplet if the sum is zero.
+
+Add triplet to result if sum is zero and triplet is not already included.
+
+🧠 Pseudocode:
+for i in range(len(nums)):
+    for j in range(i+1, len(nums)):
+        for k in range(j+1, len(nums)):
+            if nums[i] + nums[j] + nums[k] == 0 and triplet not in result:
+                add triplet to result
+
+⏱️ Time Complexity:
+O(n³) — three nested loops.
+
+🧠 Space Complexity:
+O(k) — space for storing results.
+
+✅ Optimized Approach Using Sorting and Two Pointers
+
+🔍 Approach:
+- Sort the input array.
+- Iterate with a fixed pointer from the start to the third-last element.
+- For each fixed pointer, use two pointers (left and right) to find pairs where the sum equals the negative of the fixed pointer’s value.
+- If the sum is less than zero, move the left pointer right to increase sum.
+- If the sum is greater than zero, move the right pointer left to decrease sum.
+- When sum equals zero, record the triplet and skip duplicates by moving pointers past equal values.
+- Continue until all unique triplets are found.
+
+⏱️ Time Complexity:
+O(n²) — Sorting takes O(n log n), but the two-pointer search dominates.
+
+🧠 Space Complexity:
+O(k) — Output space for k triplets found.
+
+✅ Code Trace
+Input: nums = [-1, 0, 1, 2, -1, -4]
+Sorted nums = [-4, -1, -1, 0, 1, 2]
+
+Iteration 1: fixed = -4 (index 0)
+left = 1 (-1), right = 5 (2)
+- sum = -4 + (-1) + 2 = -3 < 0 → move left to 2
+- sum = -4 + (-1) + 2 = -3 < 0 → move left to 3
+- sum = -4 + 0 + 2 = -2 < 0 → move left to 4
+- sum = -4 + 1 + 2 = -1 < 0 → move left to 5
+left >= right → end iteration
+
+Iteration 2: fixed = -1 (index 1)
+left = 2 (-1), right = 5 (2)
+- sum = -1 + (-1) + 2 = 0 → record [-1, -1, 2], move left to 3 and right to 4
+left = 3 (0), right = 4 (1)
+- sum = -1 + 0 + 1 = 0 → record [-1, 0, 1], move left to 4 and right to 3
+left >= right → end iteration
+
+Iteration 3: fixed = -1 (index 2)
+Skip duplicate fixed value
+
+Iteration 4: fixed = 0 (index 3)
+left = 4 (1), right = 5 (2)
+- sum = 0 + 1 + 2 = 3 > 0 → move right to 4
+left >= right → end iteration
+
+Result: [[-1, -1, 2], [-1, 0, 1]]

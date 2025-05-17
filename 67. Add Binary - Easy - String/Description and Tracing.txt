@@ -1,0 +1,90 @@
+LeetCode #67 - Add Binary  
+🔗 https://leetcode.com/problems/add-binary/
+
+---
+
+🧩 Problem Statement:
+
+Given two binary strings `binary1` and `binary2`, return their sum as a binary string.
+
+---
+
+💡 Example 1:  
+Input: binary1 = "11", binary2 = "1"  
+Output: "100"  
+Explanation: 3 + 1 = 4 in decimal, which is "100" in binary.
+
+💡 Example 2:  
+Input: binary1 = "1010", binary2 = "1011"  
+Output: "10101"  
+Explanation: 10 + 11 = 21 in decimal, which is "10101" in binary.
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Approach:  
+- Convert both binary strings to decimal integers.  
+- Add them.  
+- Convert the sum back to binary.
+
+⏱️ Time Complexity: O(n) — where n is the length of the longer string (due to conversion).  
+🧠 Space Complexity: O(n)
+
+---
+
+🚀 Optimized Approach — Bitwise Addition without Conversion:
+
+Instead of converting to decimal, we simulate binary addition starting from the least significant bit (end of strings).
+
+**Key Idea:**  
+- Use two pointers starting from the end of each binary string.  
+- Sum the bits along with the carry.  
+- Compute the current bit and the new carry.  
+- Prepend the current bit to the result string.  
+- Continue until all bits are processed and carry is zero.
+
+⏱️ Time Complexity: O(n) — single pass from end to start.  
+🧠 Space Complexity: O(n) — result string size.
+
+---
+
+🔎 Step-by-Step Code Trace (Example: binary1 = "11", binary2 = "1"):
+
+Input:  
+- binary1 = "11"  
+- binary2 = "1"
+
+Initialize:  
+- result = ""  
+- carry = 0  
+- index1 = 1 (pointing to last '1' in binary1)  
+- index2 = 0 (pointing to last '1' in binary2)
+
+Iteration 1:  
+- current_sum = carry = 0  
+- Add binary1[1] = '1' → current_sum = 1  
+- Add binary2[0] = '1' → current_sum = 2  
+- result = '0' + "" = "0" (since 2 % 2 = 0)  
+- carry = 2 // 2 = 1  
+- Move index1 to 0, index2 to -1
+
+Iteration 2:  
+- current_sum = carry = 1  
+- Add binary1[0] = '1' → current_sum = 2  
+- binary2 index invalid, skip  
+- result = '0' + "0" = "00"  
+- carry = 2 // 2 = 1  
+- Move index1 to -1
+
+Iteration 3:  
+- current_sum = carry = 1  
+- No bits left in binary1 or binary2  
+- result = '1' + "00" = "100"  
+- carry = 0
+
+End: carry is zero and both indices are out of range. Return "100".
+
+✅ Final Output: "100"
+
+---

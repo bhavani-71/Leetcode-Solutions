@@ -1,0 +1,136 @@
+LeetCode #3 - Longest Substring Without Repeating Characters - https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+Given a string s, find the length of the longest substring without repeating characters.
+
+---
+
+Example 1:
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+
+Example 2:
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+
+Example 3:
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+
+---
+
+Explanation:
+We need to find the longest substring (continuous characters) without any repeating characters.
+
+---
+
+🪓 Brute Force Approach
+🔍 Approach:
+Check every possible substring and verify if all characters are unique.
+
+Keep track of the longest valid substring found.
+
+🧠 Pseudocode:
+maxLength = 0
+for i in range(len(s)):
+    for j in range(i, len(s)):
+        if substring s[i:j+1] has all unique characters:
+            maxLength = max(maxLength, j-i+1)
+
+⏱️ Time Complexity:
+O(n^3) — checking all substrings and verifying uniqueness
+
+🧠 Space Complexity:
+O(min(n,m)) — storing characters in a set for uniqueness check, where m is the charset size
+
+---
+
+✅ Optimized Approach Using Sliding Window and Hash Map:
+
+Use two pointers to create a sliding window representing the current substring without duplicates.
+
+- Use a hash map (dictionary) to store the most recent index of each character.
+- Iterate over the string with an index `i`.
+- If the current character `s[i]` has appeared before and its last seen index is within the current window (i.e., >= start of window), move the start pointer just after that last index to avoid duplicates.
+- Update the last seen index of the current character to `i`.
+- Calculate the length of the current window (`i - start + 1`) and update the maximum length found.
+
+This ensures every character is visited once, and the window expands and contracts as needed to maintain uniqueness.
+
+⏱️ Time Complexity:
+O(n) — single pass through the string
+
+🧠 Space Complexity:
+O(min(n,m)) — storing character indices, where m is the size of the charset
+
+---
+
+✅ Code Trace for Example:
+
+Input: s = "abcabcbb"
+
+Initialize:
+charIndex = {}
+start = 0
+maxLength = 0
+
+Iteration 1 (i=0, s[i]='a'):
+- 'a' not in charIndex → continue
+- Update charIndex['a'] = 0
+- Window length = 0 - 0 + 1 = 1
+- maxLength = 1
+
+Iteration 2 (i=1, s[i]='b'):
+- 'b' not in charIndex → continue
+- Update charIndex['b'] = 1
+- Window length = 1 - 0 + 1 = 2
+- maxLength = 2
+
+Iteration 3 (i=2, s[i]='c'):
+- 'c' not in charIndex → continue
+- Update charIndex['c'] = 2
+- Window length = 2 - 0 + 1 = 3
+- maxLength = 3
+
+Iteration 4 (i=3, s[i]='a'):
+- 'a' in charIndex and charIndex['a'] = 0 >= start(0)
+- Move start to charIndex['a'] + 1 = 1
+- Update charIndex['a'] = 3
+- Window length = 3 - 1 + 1 = 3
+- maxLength = 3
+
+Iteration 5 (i=4, s[i]='b'):
+- 'b' in charIndex and charIndex['b'] = 1 >= start(1)
+- Move start to charIndex['b'] + 1 = 2
+- Update charIndex['b'] = 4
+- Window length = 4 - 2 + 1 = 3
+- maxLength = 3
+
+Iteration 6 (i=5, s[i]='c'):
+- 'c' in charIndex and charIndex['c'] = 2 >= start(2)
+- Move start to charIndex['c'] + 1 = 3
+- Update charIndex['c'] = 5
+- Window length = 5 - 3 + 1 = 3
+- maxLength = 3
+
+Iteration 7 (i=6, s[i]='b'):
+- 'b' in charIndex and charIndex['b'] = 4 >= start(3)
+- Move start to charIndex['b'] + 1 = 5
+- Update charIndex['b'] = 6
+- Window length = 6 - 5 + 1 = 2
+- maxLength = 3
+
+Iteration 8 (i=7, s[i]='b'):
+- 'b' in charIndex and charIndex['b'] = 6 >= start(5)
+- Move start to charIndex['b'] + 1 = 7
+- Update charIndex['b'] = 7
+- Window length = 7 - 7 + 1 = 1
+- maxLength = 3
+
+Final answer = 3
+
+---
+
