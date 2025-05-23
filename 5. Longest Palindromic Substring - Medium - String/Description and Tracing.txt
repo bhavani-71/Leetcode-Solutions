@@ -1,0 +1,88 @@
+description: |
+  📘 LeetCode: Longest Palindromic Substring  
+  📌 Title: Longest Palindromic Substring  
+  🔗 Link: https://leetcode.com/problems/longest-palindromic-substring/
+
+  🧩 Problem Statement:  
+  Given a string `s`, find the longest substring which is a palindrome.
+
+  🧱 Components:  
+  - Input: String `s`  
+  - Output: Longest palindromic substring within `s`  
+  - Data Structure: Two-pointer technique with expansion from the center  
+
+  💡 Brute Force Approach:  
+  - Consider all possible substrings of `s`  
+  - For each substring, check if it is a palindrome by comparing characters from start to end  
+  - Keep track of the longest palindrome substring found  
+  - ❌ Time Complexity: O(N³) (N² substrings and O(N) palindrome check per substring) — very inefficient for large strings
+
+  🚀 Optimized Approach (Expand Around Center):  
+  - Iterate over each character in the string as a potential palindrome center  
+  - For each center, expand left and right pointers outward as long as characters match  
+  - Consider two cases:  
+    - Odd length palindrome (single center)  
+    - Even length palindrome (two adjacent centers)  
+  - Keep track of the longest palindrome found  
+  - Time Complexity: O(N²), Space Complexity: O(1)
+detailed_trace: |
+  Example:  
+  s = "babad"
+
+  Initialize:  
+  - res = "" (holds longest palindrome found)
+
+  Iterate through s:  
+
+  i=0 ('b'):  
+  - Expand odd-length palindrome around index 0:  
+    - Expand left=0, right=0 → 'b'  
+    - res1 = "b"  
+  - Expand even-length palindrome around indices 0,1:  
+    - left=0, right=1 → 'b' != 'a' → stop  
+    - res2 = ""  
+  - Update res = "b" (max of "", "b", "")  
+
+  i=1 ('a'):  
+  - Expand odd-length:  
+    - left=1, right=1 → 'a'  
+    - left=0, right=2 → 'b' == 'b' → expand  
+    - left=-1 (stop), right=3  
+    - res1 = "bab"  
+  - Expand even-length:  
+    - left=1, right=2 → 'a' != 'b' → stop  
+    - res2 = ""  
+  - Update res = "bab" (longer than "b")  
+
+  i=2 ('b'):  
+  - Expand odd-length:  
+    - left=2, right=2 → 'b'  
+    - left=1, right=3 → 'a' == 'a' → expand  
+    - left=0, right=4 → 'b' != 'd' → stop  
+    - res1 = "aba"  
+  - Expand even-length:  
+    - left=2, right=3 → 'b' != 'a' → stop  
+    - res2 = ""  
+  - res remains "bab" (since "aba" length == "bab" length, no change)  
+
+  i=3 ('a'):  
+  - Expand odd-length:  
+    - left=3, right=3 → 'a'  
+    - left=2, right=4 → 'b' != 'd' → stop  
+    - res1 = "a"  
+  - Expand even-length:  
+    - left=3, right=4 → 'a' != 'd' → stop  
+    - res2 = ""  
+  - res remains "bab"  
+
+  i=4 ('d'):  
+  - Expand odd-length:  
+    - left=4, right=4 → 'd'  
+    - res1 = "d"  
+  - Expand even-length:  
+    - left=4, right=5 (out of bounds) → stop  
+    - res2 = ""  
+  - res remains "bab"  
+
+🎯 Result:  
+Longest palindrome substring = "bab" or "aba" (both valid answers)

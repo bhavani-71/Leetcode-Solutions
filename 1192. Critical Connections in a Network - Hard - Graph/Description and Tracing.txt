@@ -1,0 +1,108 @@
+description: |
+  🌐 Problem Statement:  
+  You are given a network of `n` servers labeled from 0 to `n-1`. The network connections are represented as a list of pairs `[u, v]`, indicating a bidirectional connection between servers `u` and `v`.  
+
+  A critical connection is an edge that, if removed, will increase the number of disconnected components in the network. In other words, removing this connection will disconnect some servers from others.  
+
+  Your task is to find all such critical connections in the network.
+
+  📌 Example:  
+  Consider `n = 4` servers and connections: `[[0,1], [1,2], [2,0], [1,3]]`.  
+
+  The network looks like:  
+
+
+  0
+ / \
+1---2
+|
+3
+
+- Servers `0, 1, 2` form a cycle, so removing any edge between them still keeps the network connected.  
+- The connection `[1, 3]` connects server `3` to the rest. Removing `[1, 3]` isolates server `3`.  
+Therefore, the critical connection is `[[1, 3]]`.
+
+🧩 Input:  
+- `n`: integer, number of servers  
+- `connections`: list of pairs representing connections  
+
+📤 Output:  
+- List of all critical connections (edges) that disconnect the network if removed.
+
+💡 Brute Force Approach:  
+- For each connection, remove it from the network.  
+- Check if the network remains fully connected by running DFS/BFS.  
+- If removing the connection disconnects the graph, add it to the critical connections list.  
+- ❌ Time Complexity: O(E * (V + E)) where E is number of edges and V is number of vertices — inefficient for large networks.
+
+🚀 Optimized Approach (Tarjan’s Algorithm for Bridges):  
+- Use DFS to assign each node a discovery time and low-link value.  
+- The low-link value of a node represents the earliest visited vertex reachable from that node or its descendants.  
+- An edge `(u, v)` is critical if `low[v] > disc[u]`, meaning no back edge connects `v` or its descendants back to `u` or earlier nodes.  
+- Run DFS from each unvisited node to find all critical edges efficiently.  
+
+⏱️ Time Complexity: O(V + E) — each node and edge visited once  
+🧠 Space Complexity: O(V + E) for adjacency and auxiliary arrays
+
+
+detailed_trace_with_emojis: |
+  Example:  
+  n = 4  
+  connections = [[0,1], [1,2], [2,0], [1,3]]
+
+  Step 1️⃣: Build adjacency list:  
+
+Step-by-step:  
+- Build adjacency list:  
+  0: [1,2]  
+  1: [0,2,3]  
+  2: [1,0]  
+  3: [1]
+
+ - Initial:  
+    disc = [-1, -1, -1, -1]  
+    low = [-1, -1, -1, -1]  
+    time = 0️⃣  
+    result = []
+
+  - Step 1️⃣: DFS starts at node 0  
+    disc[0] = low[0] = 0️⃣, time → 1️⃣  
+
+  - Step 2️⃣: Visit neighbors of 0 → node 1  
+    disc[1] = low[1] = 1️⃣, time → 2️⃣  
+
+  - Step 3️⃣: Visit neighbors of 1  
+    Skip parent 0 🚫  
+    Visit neighbor 2  
+
+  - Step 4️⃣: Visit neighbors of 2  
+    disc[2] = low[2] = 2️⃣, time → 3️⃣  
+    Skip parent 1 🚫  
+    Neighbor 0 visited → update low[2] = min(2️⃣, 0️⃣) = 0️⃣  
+
+  - Step 5️⃣: End DFS for 2  
+    Update low[1] = min(1️⃣, 0️⃣) = 0️⃣  
+
+  - Step 6️⃣: Back to 1 → visit neighbor 3  
+    disc[3] = low[3] = 3️⃣, time → 4️⃣  
+
+  - Step 7️⃣: Visit neighbors of 3  
+    Skip parent 1 🚫  
+
+  - Step 8️⃣: End DFS for 3  
+    Update low[1] = min(0️⃣, 3️⃣) = 0️⃣  
+
+  - Step 9️⃣: Check if edge (1,3) is critical  
+    low[3] (3️⃣) > disc[1] (1️⃣) → Yes ✅  
+    Add [1, 3] to result  
+
+  - Step 🔟: End DFS for 1  
+    Update low[0] = min(0️⃣, 0️⃣) = 0️⃣  
+
+  - Step 1️⃣1️⃣: End DFS for 0  
+    All nodes visited  
+
+  **Final critical connections:** [[1, 3]] 
+
+🎯 Summary:
+The algorithm finds edges whose removal increases network disconnectivity by using discovery and low-link values during DFS traversal, making it efficient and suitable for large graphs.

@@ -1,0 +1,74 @@
+LeetCode #278 - First Bad Version  
+🔗 https://leetcode.com/problems/first-bad-version/
+
+---
+
+🧩 Problem Statement:
+
+You are a product manager and currently leading a team to develop a new product.
+
+Unfortunately, the latest version of your product fails the quality check.
+
+Since each version is developed based on the previous version, all versions after a bad version are also bad.
+
+Given n versions [1, 2, ..., n] and an API `isBadVersion(version)` which returns whether version is bad,
+
+Find the first bad version.
+
+---
+
+💡 Example:
+
+Input: n = 5, bad = 4  
+Output: 4  
+Explanation: Versions 4 and 5 are bad. The first bad version is 4.
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Idea:  
+- Check each version from 1 to n sequentially.  
+- Return the first version for which isBadVersion(version) is True.
+
+🧠 Pseudocode:  
+for version in range(1, n+1):  
+ if isBadVersion(version):  
+  return version
+⏱️ Time Complexity: O(n) — may check all versions in worst case  
+🧠 Space Complexity: O(1)
+
+---
+
+🚀 Optimized Approach — Binary Search:
+
+✅ Strategy:  
+- Use binary search to reduce the number of calls to isBadVersion.  
+- Initialize two pointers l=1 and h=n.  
+- While l < h:  
+ - mid = (l + h) // 2  
+ - If isBadVersion(mid) is True, move h to mid (search left half).  
+ - Else, move l to mid + 1 (search right half).  
+- Return l as the first bad version.
+
+⏱️ Time Complexity: O(log n) — logarithmic calls to isBadVersion  
+🧠 Space Complexity: O(1)
+
+---
+
+✅ Code Walkthrough:
+
+- Start with l=1, h=n  
+- Check mid = (l+h)//2  
+- If mid is bad, search left half (h=mid)  
+- Else, search right half (l=mid+1)  
+- Continue until l == h  
+- Return l
+
+---
+
+✅ Example Trace (n=5, first bad=4):
+
+- l=1, h=5, mid=3 → isBadVersion(3)=False → l=4  
+- l=4, h=5, mid=4 → isBadVersion(4)=True → h=4  
+- l=4, h=4 → loop ends, return 4

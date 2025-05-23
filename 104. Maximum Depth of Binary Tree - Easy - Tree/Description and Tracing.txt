@@ -1,0 +1,52 @@
+LeetCode: 104
+Title: Maximum Depth of Binary Tree
+Link: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
+---
+
+🧩 Problem Statement:
+
+Given the root of a binary tree, find its maximum depth. The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+---
+
+💡 Example:
+
+Input Tree:
+       3
+      / \
+     9  20
+        /  \
+       15   7
+
+Output: 3
+
+Explanation:  
+The longest path from root to leaf is 3 → 20 → 15 (or 3 → 20 → 7), so the maximum depth is 3.
+
+---
+
+🚀 Approach (Recursive Depth-First Search):
+
+✅ Strategy:
+- If the current node is null, depth is 0.
+- Otherwise, recursively compute the max depth of left and right subtrees.
+- Maximum depth at current node = 1 + max(left depth, right depth).
+
+⏱️ Time Complexity: O(n) — visit each node once  
+🧠 Space Complexity: O(h) — recursion stack space where h is height of the tree.
+
+---
+
+✅ Code Trace (Partial):
+
+At node 3:  
+- Compute maxDepth of left child (9):  
+  - Node 9 is leaf, left and right null → depth = 1  
+- Compute maxDepth of right child (20):  
+  - Compute maxDepth of 15 → depth = 1  
+  - Compute maxDepth of 7 → depth = 1  
+  - Max depth at 20 = 1 + max(1,1) = 2  
+- Max depth at 3 = 1 + max(1,2) = 3
+
+Final max depth = 3

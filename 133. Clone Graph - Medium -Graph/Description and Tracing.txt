@@ -1,0 +1,110 @@
+LeetCode #133 - Clone Graph  
+🔗 https://leetcode.com/problems/clone-graph/
+
+---
+
+🌐 Graph Visualization:
+
+    1
+   / \
+  2   4
+   \ /
+    3
+
+🔁 Connections:
+- Node 1 → [2, 4]
+- Node 2 → [1, 3]
+- Node 3 → [2, 4]
+- Node 4 → [1, 3]
+
+---
+
+🧩 Problem Statement:
+
+Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph.
+
+Each node in the graph contains a value (`int`) and a list of its neighbors.
+
+Constraints:
+- The number of nodes in the graph is in the range [0, 100].
+- 1 <= Node.val <= 100
+- Node.val is unique for each node.
+- The graph is connected and undirected.
+
+---
+
+💡 Example:
+
+Input:
+Node with val = 1  
+Connections: 1–2, 1–4, 2–3, 3–4
+
+Output:
+A new graph that is structurally identical but made of new node instances.
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Approach:
+- There’s no real “brute force” since cloning a graph requires traversal. But you can use DFS or BFS with a dictionary to keep track of already cloned nodes.
+
+⏱️ Time Complexity: O(N + E)  
+- N is number of nodes  
+- E is number of edges
+
+🧠 Space Complexity: O(N)  
+- To store the cloned nodes and recursion stack
+
+---
+
+🚀 Optimized DFS Approach:
+
+✅ Strategy:
+- Use a hash map to keep track of visited nodes (original → clone).
+- Perform DFS:
+  - If the node is already cloned, return it.
+  - Otherwise, clone the node and recursively clone all neighbors.
+
+🧠 Pseudocode:
+
+clone_graph(node):  
+ if node is None:  
+  return None  
+ if node in visited:  
+  return visited[node]  
+   
+ copy = Node(node.val)  
+ visited[node] = copy  
+   
+ for neighbor in node.neighbors:  
+  copy.neighbors.append(clone_graph(neighbor))  
+   
+ return copy
+
+⏱️ Time Complexity: O(N + E)  
+🧠 Space Complexity: O(N)
+
+---
+
+✅ Code Trace:
+
+Input Graph:
+- 1 connects to [2, 4]
+- 2 connects to [1, 3]
+- 3 connects to [2, 4]
+- 4 connects to [1, 3]
+
+Steps:
+- Start at Node 1 → Clone Node 1
+- Visit neighbor Node 2 → Clone Node 2
+- Visit neighbor Node 3 from 2 → Clone Node 3
+- Visit neighbor Node 4 from 3 → Clone Node 4
+- Backtrack and connect all neighbors
+
+Each node is cloned only once and connections are re-established recursively.
+
+---
+
+✅ Final Output:
+Returns a deep-copied graph with same structure and values but different memory references.

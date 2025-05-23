@@ -5,32 +5,28 @@
 #         self.left = left
 #         self.right = right
 
-from typing import Optional
-
 class Solution:
-    def diameterOfBinaryTree(self, root: Optional['TreeNode']) -> int:
-        self.max_diameter = 0  # Stores the maximum diameter found so far
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        """
+        Returns True if the binary tree rooted at 'root' is a valid Binary Search Tree.
+        """
 
-        def depth(node: Optional['TreeNode']) -> int:
-            # Base case: if node is None, return 0 depth
+        def validate_bst(node: Optional[TreeNode], lower_bound: float, upper_bound: float) -> bool:
+            # Base case: An empty node is always valid
             if not node:
-                return 0
-            
-            # Recursively find the depth of left and right subtrees
-            left_depth = depth(node.left)
-            right_depth = depth(node.right)
-            
-            # Possible diameter at this node is sum of left and right depths
-            current_diameter = left_depth + right_depth
-            
-            # Update max_diameter if current diameter is larger
-            if current_diameter > self.max_diameter:
-                self.max_diameter = current_diameter
-            
-            # Return depth of current node = 1 + max depth of its subtrees
-            return 1 + max(left_depth, right_depth)
-        
-        # Start DFS traversal from root
-        depth(root)
-        
-        return self.max_diameter
+                return True
+
+            # The current node's value must be within the valid range
+            if not (lower_bound < node.val < upper_bound):
+                return False
+
+            # Recursively validate the right subtree with updated lower bound
+            is_right_valid = validate_bst(node.right, node.val, upper_bound)
+
+            # Recursively validate the left subtree with updated upper bound
+            is_left_valid = validate_bst(node.left, lower_bound, node.val)
+
+            return is_left_valid and is_right_valid
+
+        # Start with the entire range of valid values
+        return validate_bst(root, float('-inf'), float('inf'))

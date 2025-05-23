@@ -1,0 +1,64 @@
+description: |
+  📘 LeetCode: Range Sum Query - Immutable  
+  📌 Title: Range Sum Query - Immutable  
+  🔗 Link: https://leetcode.com/problems/range-sum-query-immutable/
+
+  🧩 Problem Statement:  
+  Given an integer array `nums`, handle multiple queries of the form `sumRange(left, right)`, where `left <= right`. Return the sum of elements between indices `left` and `right` (inclusive).
+
+  🧱 Components:  
+  - Input:  
+    - `nums`: List of integers  
+    - `left`: starting index of the query  
+    - `right`: ending index of the query  
+  - Output: Sum of elements from `left` to `right`  
+  - Data Structure: Prefix sum array to optimize multiple range sum queries
+
+  💡 Brute Force Approach:  
+  - For each query, iterate from `left` to `right` and compute the sum  
+  - ❌ Time Complexity: O(N) per query  
+  - ❌ Inefficient when queries are many
+
+  🚀 Optimized Approach (Prefix Sum Precomputation):  
+  - Precompute prefix sums in the constructor:  
+    - `prefix[i] = nums[0] + nums[1] + ... + nums[i]`  
+  - To get the sum from `left` to `right`:  
+    - If `left == 0`: return `prefix[right]`  
+    - Else: return `prefix[right] - prefix[left - 1]`  
+  - ✅ Time Complexity:  
+    - Constructor: O(N)  
+    - Query: O(1)  
+  - ✅ Space Complexity: O(N)
+
+detailed_trace: |
+  Example:  
+  nums = [-2, 0, 3, -5, 2, -1]  
+  Queries: sumRange(0, 2), sumRange(2, 5), sumRange(0, 5)
+
+  📦 Precompute prefix sum during initialization:  
+  prefix[0] = -2  
+  prefix[1] = prefix[0] + 0 = -2  
+  prefix[2] = prefix[1] + 3 = 1  
+  prefix[3] = prefix[2] + (-5) = -4  
+  prefix[4] = prefix[3] + 2 = -2  
+  prefix[5] = prefix[4] + (-1) = -3  
+
+  Final prefix array:  
+  🧮 prefix = [-2, -2, 1, -4, -2, -3]
+
+  💬 Query: sumRange(0, 2)  
+  - left == 0 → result = prefix[2] = 1 ✅  
+
+  💬 Query: sumRange(2, 5)  
+  - result = prefix[5] - prefix[1] = (-3) - (-2) = -1 ✅  
+
+  💬 Query: sumRange(0, 5)  
+  - left == 0 → result = prefix[5] = -3 ✅  
+
+🎯 Result:  
+- sumRange(0, 2) = 1  
+- sumRange(2, 5) = -1  
+- sumRange(0, 5) = -3
+
+💡 Explanation:  
+Using prefix sums, we reduce the time per query to O(1) by subtracting precomputed cumulative values. This is ideal for scenarios with many queries on a static array.

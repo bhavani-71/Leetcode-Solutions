@@ -1,0 +1,105 @@
+description: |
+  📘 LeetCode: Longest Repeating Character Replacement  
+  📌 Title: Longest Repeating Character Replacement  
+  🔗 Link: https://leetcode.com/problems/longest-repeating-character-replacement/
+
+  🧩 Problem Statement:  
+  Given a string `s` and an integer `k`, you can replace at most `k` characters in the string to get the longest substring with all repeating characters. Return the length of the longest such substring.
+
+  🧱 Components:  
+  - Input:  
+    - `s`: a string consisting of uppercase English letters  
+    - `k`: integer representing maximum allowed replacements  
+  - Output: Length of the longest substring with repeating characters after up to `k` replacements  
+  - Data Structure: Sliding Window + HashMap (dictionary) to track frequencies
+
+  💡 Brute Force Approach:  
+  - Consider every possible substring of `s`  
+  - For each substring, count the frequency of each character  
+  - Calculate the number of characters that need to be replaced to make the substring all the same character  
+  - If the replacements needed are ≤ `k`, update the max length  
+  - ❌ Time complexity O(N³) (checking all substrings and counting frequencies) — inefficient for large strings
+
+  🚀 Optimized Approach (Sliding Window + Frequency Counting):  
+  - Use two pointers `l` and `i` to maintain a sliding window  
+  - Maintain frequency of chars in current window and track max frequency  
+  - If window size minus max frequency > `k`, shrink window from left  
+  - Keep track of max window length seen so far
+
+  ⏱️ Time Complexity: O(N), N = length of s (each character visited at most twice)  
+  🧠 Space Complexity: O(1), since dictionary stores max 26 characters (English uppercase)
+
+detailed_trace: |
+  Example:  
+  s = "AABABBA", k = 1
+
+  Initialize:  
+  - 👈 left = 0, max_freq = 0, max_length = 0  
+  - 📊 frequency_dict = {}
+
+  Iterate over s with right pointer (i):  
+
+  i=0 ('A'):  
+  - 📊 frequency_dict = {'A':1}  
+  - 🔝 max_freq = 1 (max frequency in window)  
+  - 🔢 window size = 1, replacements needed = 1 - 1 = 0 ≤ k(1) ✅ valid  
+  - 📈 max_length = 1  
+
+  i=1 ('A'):  
+  - 📊 frequency_dict = {'A':2}  
+  - 🔝 max_freq = 2  
+  - 🔢 window size = 2, replacements needed = 2 - 2 = 0 ≤ 1 ✅ valid  
+  - 📈 max_length = 2  
+
+  i=2 ('B'):  
+  - 📊 frequency_dict = {'A':2, 'B':1}  
+  - 🔝 max_freq = 2 (still 'A')  
+  - 🔢 window size = 3, replacements needed = 3 - 2 = 1 ≤ 1 ✅ valid  
+  - 📈 max_length = 3  
+
+  i=3 ('A'):  
+  - 📊 frequency_dict = {'A':3, 'B':1}  
+  - 🔝 max_freq = 3  
+  - 🔢 window size = 4, replacements needed = 4 - 3 = 1 ≤ 1 ✅ valid  
+  - 📈 max_length = 4  
+
+  i=4 ('B'):  
+  - 📊 frequency_dict = {'A':3, 'B':2}  
+  - 🔝 max_freq = 3  
+  - 🔢 window size = 5, replacements needed = 5 - 3 = 2 > k(1) ❌ invalid  
+  - 🔄 Shrink window from left:  
+    - ➖ frequency_dict['A'] = 2  
+    - 👈 left = 1  
+  - 🔢 window size = 4, replacements = 4 - 3 = 1 ≤ 1 ✅ valid  
+  - 📈 max_length = 4  
+
+  i=5 ('B'):  
+  - 📊 frequency_dict = {'A':2, 'B':3}  
+  - 🔝 max_freq = 3 ('B')  
+  - 🔢 window size = 5, replacements = 5 - 3 = 2 > 1 ❌ invalid  
+  - 🔄 Shrink window from left:  
+    - ➖ frequency_dict['A'] = 1  
+    - 👈 left = 2  
+  - 🔢 window size = 4, replacements = 4 - 3 = 1 ≤ 1 ✅ valid  
+  - 📈 max_length = 4  
+
+  i=6 ('A'):  
+  - 📊 frequency_dict = {'A':2, 'B':3}  
+  - 🔝 max_freq = 3 ('B')  
+  - 🔢 window size = 5, replacements = 5 - 3 = 2 > 1 ❌ invalid  
+  - 🔄 Shrink window from left:  
+    - ➖ frequency_dict['B'] = 2  
+    - 👈 left = 3  
+  - 🔢 window size = 4, replacements = 4 - 2 = 2 > 1 ❌ still invalid  
+  - 🔄 Shrink window again:  
+    - ➖ frequency_dict['A'] = 1  
+    - 👈 left = 4  
+  - 🔢 window size = 3, replacements = 3 - 2 = 1 ≤ 1 ✅ valid  
+  - 📈 max_length = 4  
+
+🎯 Result:  
+Longest valid substring length is 4.
+
+💡 Explanation:  
+- Substrings like "AABA" or "ABBB" can be formed by replacing at most one character to have all repeating characters.
+

@@ -1,0 +1,120 @@
+https://leetcode.com/problems/lru-cache/
+🧩 Problem Statement:
+
+Design a Least Recently Used (LRU) cache with fixed capacity supporting `get` and `put` operations in O(1) time.  
+- `get(key)`: Return the value of the key if it exists, otherwise -1.  
+- `put(key, value)`: Insert or update the value of the key. If the cache exceeds capacity, evict the least recently used item.
+
+---
+
+🪓 Brute Force Approach (List-based):
+
+🔍 Approach:  
+- Use a list to store keys in usage order.  
+- On `get`, search the list (O(n)) and move accessed key to end.  
+- On `put`, append or update and remove least recently used (front) if capacity exceeded.  
+- This results in O(n) for both operations due to list scanning and repositioning.
+
+⏱️ Time Complexity: O(n) per operation.  
+🧠 Space Complexity: O(capacity).
+
+---
+
+🚀 Optimized Approach (OrderedDict):
+
+✅ Strategy:  
+- Use `OrderedDict` to maintain order of keys.  
+- On `get(key)`:  
+  - If key not found, return -1.  
+  - Else, move key to the end to mark it recently used, and return its value.  
+- On `put(key, value)`:  
+  - If key exists, move it to end and update value.  
+  - Else, insert key-value.  
+  - If capacity exceeded, pop the first inserted (least recently used) item.
+
+⏱️ Time Complexity: O(1) for get and put due to efficient doubly linked list structure.  
+🧠 Space Complexity: O(capacity).
+
+---
+
+💡 Code Explanation:
+
+- `self.cache` is an `OrderedDict` storing key-value pairs.  
+- `move_to_end(key)` marks a key as most recently used.  
+- `popitem(last=False)` removes the least recently used (first) item when capacity is exceeded.
+
+This implementation efficiently maintains the LRU property and supports required operations in constant time.
+
+---
+
+🚀 Detailed Trace of LRUCache Operations:
+
+Assume capacity = 2  
+Operations: put(1, 1), put(2, 2), get(1), put(3, 3), get(2), put(4, 4), get(1), get(3), get(4)
+
+Initial State: cache = {}
+
+---
+
+🟢 put(1, 1):  
+- Cache empty, insert (1,1)  
+- cache = {1:1}  
+
+🟢 put(2, 2):  
+- Insert (2,2)  
+- cache = {1:1, 2:2}  
+
+---
+
+🔵 get(1):  
+- Key 1 found with value 1  
+- Move key 1 to end to mark recently used  
+- cache after move = {2:2, 1:1}  
+- Returns 1  
+
+---
+
+🟢 put(3, 3):  
+- Cache full, capacity=2  
+- Insert (3,3), evict least recently used key = 2  
+- cache after eviction and insertion = {1:1, 3:3}  
+
+---
+
+🔵 get(2):  
+- Key 2 not found (evicted)  
+- Returns -1  
+
+---
+
+🟢 put(4, 4):  
+- Cache full  
+- Insert (4,4), evict least recently used key = 1  
+- cache after eviction and insertion = {3:3, 4:4}  
+
+---
+
+🔵 get(1):  
+- Key 1 not found (evicted)  
+- Returns -1  
+
+🔵 get(3):  
+- Key 3 found with value 3  
+- Move key 3 to end  
+- cache = {4:4, 3:3}  
+- Returns 3  
+
+🔵 get(4):  
+- Key 4 found with value 4  
+- Move key 4 to end  
+- cache = {3:3, 4:4}  
+- Returns 4  
+
+---
+
+Summary:  
+- The cache maintains order of usage.  
+- Each `get` moves accessed key to the end (most recently used).  
+- Each `put` inserts or updates key and evicts the least recently used when capacity exceeded.  
+- Operations maintain O(1) efficiency via OrderedDict.
+

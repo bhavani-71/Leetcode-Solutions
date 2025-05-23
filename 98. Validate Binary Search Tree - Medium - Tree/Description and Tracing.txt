@@ -1,0 +1,93 @@
+LeetCode: 98  
+Title: Validate Binary Search Tree  
+Link: https://leetcode.com/problems/validate-binary-search-tree/  
+
+---
+
+🧩 Problem Statement:
+
+Given the root of a binary tree, determine if it is a valid Binary Search Tree (BST).
+
+A valid BST is defined as follows:
+- The left subtree of a node contains only nodes with keys **less than** the node's key.
+- The right subtree of a node contains only nodes with keys **greater than** the node's key.
+- Both the left and right subtrees must also be binary search trees.
+
+---
+
+💡 Example:
+
+Input Tree:
+    2
+   / \
+  1   3
+
+Output: True
+
+Input Tree:
+    5
+   / \
+  1   4
+     / \
+    3   6
+
+Output: False
+
+Explanation:  
+In the second example, the node 4 is in the right subtree of 5, but it has a child 3 which violates the BST rule because 3 < 5.
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Idea:
+- Perform an **in-order traversal** of the binary tree.
+- Store the traversal result in a list.
+- A valid BST will have an **increasing** in-order sequence (sorted with no duplicates).
+- After traversal, compare the list with its sorted version or verify that each element is strictly greater than the previous.
+
+⏱️ Time Complexity: O(n)  
+🧠 Space Complexity: O(n) — due to storing the in-order traversal result
+
+---
+
+🚀 Optimized Approach (DFS with Bounds):
+
+✅ Strategy:
+- Use a **recursive DFS** with min and max bounds to validate each node.
+- Start with bounds as (-∞, ∞).
+- For each node:
+    - Check `lower_bound < node.val < upper_bound`.
+    - For the left subtree, update upper bound to `node.val`.
+    - For the right subtree, update lower bound to `node.val`.
+- Return True if all nodes satisfy constraints.
+
+⏱️ Time Complexity: O(n) — each node visited once  
+🧠 Space Complexity: O(h) — recursion stack where `h` is height of tree
+
+---
+
+✅ Code Trace:
+
+Example Tree:
+       5
+      / \
+     1   4
+        / \
+       3   6
+
+- Start at root 5 with bounds (-∞, ∞) → valid.
+- Recurse right to node 4 with bounds (5, ∞) → ❌ invalid, because 4 < 5.
+
+Output: False
+
+Another Example:
+       2
+      / \
+     1   3
+
+- Start at 2 → valid
+- Left child 1: bounds (-∞, 2) → valid
+- Right child 3: bounds (2, ∞) → valid
+
+Output: True

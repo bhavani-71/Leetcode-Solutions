@@ -1,0 +1,66 @@
+LeetCode: 875  
+Title: Koko Eating Bananas  
+Link: https://leetcode.com/problems/koko-eating-bananas/
+
+---
+
+🧩 Problem Statement:  
+Koko loves to eat bananas. There are piles of bananas, where piles[i] is the number of bananas in the i-th pile. Koko can decide her eating speed k (bananas per hour). Each hour, she chooses some pile and eats k bananas from that pile. If the pile has fewer than k bananas, she eats all of them and stops eating for that hour. Given h hours, find the minimum integer k such that Koko can eat all the bananas within h hours.
+
+---
+
+💡 Example:  
+Input: piles = [3,6,7,11], h = 8  
+Output: 4
+
+---
+
+🪓 Brute Force Approach:  
+- Check each speed from 1 to max pile size and simulate eating.  
+- Time complexity: O(n * max(pile)) which is inefficient.
+
+---
+
+🚀 Optimized Approach (Binary Search on Speed):  
+- Binary search over the possible speeds between 1 and max(piles).  
+- For each mid speed, check if Koko can finish eating all piles within h hours.  
+- Narrow the search space based on feasibility.  
+- Time complexity: O(n log(max(pile))), space complexity: O(1).
+
+---
+
+🔍 Code Trace (Example piles = [3,6,7,11], h=8):
+
+- left=1, right=11
+
+Iteration 1:
+mid = (1+11)//2 = 6
+Check if speed=6 works:
+Hours = ceil(3/6)=1 + ceil(6/6)=1 + ceil(7/6)=2 + ceil(11/6)=2 = 6 hours <=8 → yes
+Update right=6
+
+Iteration 2:
+left=1, right=6
+mid= (1+6)//2=3
+Check speed=3:
+Hours = ceil(3/3)=1 + ceil(6/3)=2 + ceil(7/3)=3 + ceil(11/3)=4 = 10 > 8 → no
+Update left=4
+
+Iteration 3:
+left=4, right=6
+mid=5
+Check speed=5:
+Hours = 1 + 2 + 2 + 3 = 8 → yes
+Update right=5
+
+Iteration 4:
+left=4, right=5
+mid=4
+Check speed=4:
+Hours = 1 + 2 + 2 + 3 = 8 → yes
+Update right=4
+
+Now left=4, right=4, loop ends.
+
+Return 4 as minimum eating speed.
+```

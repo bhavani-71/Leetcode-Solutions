@@ -1,0 +1,73 @@
+description: |
+  📘 LeetCode: Coin Change II  
+  📌 Title: Coin Change II  
+  🔗 Link: https://leetcode.com/problems/coin-change-ii/
+
+  🧩 Problem Statement:  
+  You are given an integer `amount` and a list of `coins`.  
+  Return the number of combinations that make up the amount using unlimited supply of coins from the list.  
+  You may assume that you have infinite number of each kind of coin.
+
+  🧱 Components:  
+  - Input:  
+    - `amount` (int): Target sum  
+    - `coins` (List[int]): List of distinct coin denominations  
+  - Output: Number of combinations to make up the amount  
+  - Data Structure: 1D Dynamic Programming array
+
+  💡 Brute Force Approach:  
+  - Try all combinations recursively (include or exclude each coin at each step)  
+  - Time Complexity: Exponential  
+  - ❌ Inefficient for large inputs due to repeated subproblems
+
+  🚀 Optimized Approach (Bottom-Up Dynamic Programming):  
+  - Use a 1D array `dp` where `dp[i]` stores number of ways to form amount `i`  
+  - Initialize `dp[0] = 1` (1 way to form amount 0: choose nothing)  
+  - For each coin, iterate over all amounts ≥ coin  
+  - For each amount, add the number of ways to form `(amount - coin)` to `dp[amount]`
+
+  ⏱️ Time Complexity: O(N × amount), where N is number of coins  
+  🧠 Space Complexity: O(amount), using 1D array of size (amount + 1)
+detailed_trace: |
+  Example:  
+  amount = 5  
+  coins = [1, 2, 5]
+
+  Initialize:  
+  - 🔢 dp = [1, 0, 0, 0, 0, 0]  
+    (dp[0] = 1 because there’s exactly 1 way to make amount 0 — by choosing no coins)
+
+  ▶ Using coin = 1:  
+  - i = 1: dp[1] += dp[1 - 1] → 0 + 1 = 1  
+    dp = [1, 1, 0, 0, 0, 0]  
+  - i = 2: dp[2] += dp[2 - 1] → 0 + 1 = 1  
+    dp = [1, 1, 1, 0, 0, 0]  
+  - i = 3: dp[3] += dp[3 - 1] → 0 + 1 = 1  
+    dp = [1, 1, 1, 1, 0, 0]  
+  - i = 4: dp[4] += dp[4 - 1] → 0 + 1 = 1  
+    dp = [1, 1, 1, 1, 1, 0]  
+  - i = 5: dp[5] += dp[5 - 1] → 0 + 1 = 1  
+    dp = [1, 1, 1, 1, 1, 1]  
+
+  ▶ Using coin = 2:  
+  - i = 2: dp[2] += dp[2 - 2] → 1 + 1 = 2  
+    dp = [1, 1, 2, 1, 1, 1]  
+  - i = 3: dp[3] += dp[3 - 2] → 1 + 1 = 2  
+    dp = [1, 1, 2, 2, 1, 1]  
+  - i = 4: dp[4] += dp[4 - 2] → 1 + 2 = 3  
+    dp = [1, 1, 2, 2, 3, 1]  
+  - i = 5: dp[5] += dp[5 - 2] → 1 + 2 = 3  
+    dp = [1, 1, 2, 2, 3, 3]  
+
+  ▶ Using coin = 5:  
+  - i = 5: dp[5] += dp[5 - 5] → 3 + 1 = 4  
+    dp = [1, 1, 2, 2, 3, 4]  
+
+  ✅ Final answer: dp[amount] = dp[5] = 4
+
+  💡 Explanation:  
+  There are 4 ways to make amount 5 using coins [1, 2, 5]:  
+  1️⃣ 1+1+1+1+1  
+  2️⃣ 1+1+1+2  
+  3️⃣ 1+2+2  
+  4️⃣ 5

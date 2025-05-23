@@ -1,0 +1,164 @@
+https://leetcode.com/problems/edit-distance/
+
+🧩 Problem Statement:
+
+Given two strings `word1` and `word2`, find the minimum number of operations required to convert `word1` into `word2`. The allowed operations are:
+- Insert a character
+- Delete a character
+- Replace a character
+
+---
+
+🪓 Brute Force Approach (Recursive with memoization):
+
+🔍 Approach:
+- Use recursion to compare characters from both strings.
+- If characters are the same, move to the next pair without any cost.
+- If different, try all three operations (insert, delete, replace) and choose the minimum cost path.
+- Use memoization to avoid repeated calculations.
+- This approach has exponential time complexity without memoization.
+
+⏱️ Time Complexity: O(m * n) with memoization  
+🧠 Space Complexity: O(m * n) for recursion stack and memoization table
+
+---
+
+💡 Optimized Approach (Dynamic Programming with Space Optimization):
+
+✅ Strategy:
+- Use two arrays `prev` and `curr` to store the edit distance computations row-wise.
+- `prev[j]` holds the edit distance between first `i-1` characters of `word1` and first `j` characters of `word2`.
+- `curr[j]` holds the edit distance between first `i` characters of `word1` and first `j` characters of `word2`.
+- Iterate over all characters, and:
+  - If characters are equal, carry forward previous diagonal value (no extra cost).
+  - Else, consider min of:
+    - Delete (prev[j] + 1)
+    - Insert (curr[j-1] + 1)
+    - Replace (prev[j-1] + 1)
+- Swap `prev` and `curr` at the end of each row to save space.
+- Final answer is `prev[n]` after all rows processed.
+
+⏱️ Time Complexity: O(m * n)  
+🧠 Space Complexity: O(n) (since only two rows are kept at any time)
+
+---
+
+🚀 Code Trace for Example:
+
+word1 = "horse"  
+word2 = "ros"
+
+
+- Initialize:  
+  prev_row = [0, 1, 2, 3]  
+  (Transforming "" → "", "" → "r"(1 insert), "" → "ro"(2 inserts), "" → "ros"(3 inserts))
+
+---
+
+🧮 Iteration i = 1 (word1[0] = 'h'):
+
+- curr_row[0] = 1 (delete 'h' to match empty string)
+
+j=1 ('r'):  
+- 'h' != 'r' → cost = 1 + min(prev_row[1]=1 (delete), curr_row[0]=1 (insert), prev_row[0]=0 (replace)) = 1  
+- curr_row[1] = 1
+
+j=2 ('o'):  
+- 'h' != 'o' → cost = 1 + min(prev_row[2]=2, curr_row[1]=1, prev_row[1]=1) = 2  
+- curr_row[2] = 2
+
+j=3 ('s'):  
+- 'h' != 's' → cost = 1 + min(prev_row[3]=3, curr_row[2]=2, prev_row[2]=2) = 3  
+- curr_row[3] = 3
+
+After i=1:  
+prev_row = [1, 1, 2, 3]
+
+---
+
+🧮 Iteration i = 2 (word1[1] = 'o'):
+
+- curr_row[0] = 2 (delete 'h','o' to match empty string)
+
+j=1 ('r'):  
+- 'o' != 'r' → cost = 1 + min(prev_row[1]=1, curr_row[0]=2, prev_row[0]=1) = 2  
+- curr_row[1] = 2
+
+j=2 ('o'):  
+- 'o' == 'o' → cost = prev_row[1] = 1  
+- curr_row[2] = 1
+
+j=3 ('s'):  
+- 'o' != 's' → cost = 1 + min(prev_row[3]=3, curr_row[2]=1, prev_row[2]=2) = 2  
+- curr_row[3] = 2
+
+After i=2:  
+prev_row = [2, 2, 1, 2]
+
+---
+
+🧮 Iteration i = 3 (word1[2] = 'r'):
+
+- curr_row[0] = 3 (delete 'h','o','r')
+
+j=1 ('r'):  
+- 'r' == 'r' → cost = prev_row[0] = 2  
+- curr_row[1] = 2
+
+j=2 ('o'):  
+- 'r' != 'o' → cost = 1 + min(prev_row[2]=1, curr_row[1]=2, prev_row[1]=2) = 2  
+- curr_row[2] = 2
+
+j=3 ('s'):  
+- 'r' != 's' → cost = 1 + min(prev_row[3]=2, curr_row[2]=2, prev_row[2]=1) = 2  
+- curr_row[3] = 2
+
+After i=3:  
+prev_row = [3, 2, 2, 2]
+
+---
+
+🧮 Iteration i = 4 (word1[3] = 's'):
+
+- curr_row[0] = 4
+
+j=1 ('r'):  
+- 's' != 'r' → cost = 1 + min(prev_row[1]=2, curr_row[0]=4, prev_row[0]=3) = 3  
+- curr_row[1] = 3
+
+j=2 ('o'):  
+- 's' != 'o' → cost = 1 + min(prev_row[2]=2, curr_row[1]=3, prev_row[1]=2) = 3  
+- curr_row[2] = 3
+
+j=3 ('s'):  
+- 's' == 's' → cost = prev_row[2] = 2  
+- curr_row[3] = 2
+
+After i=4:  
+prev_row = [4, 3, 3, 2]
+
+---
+
+🧮 Iteration i = 5 (word1[4] = 'e'):
+
+- curr_row[0] = 5
+
+j=1 ('r'):  
+- 'e' != 'r' → cost = 1 + min(prev_row[1]=3, curr_row[0]=5, prev_row[0]=4) = 4  
+- curr_row[1] = 4
+
+j=2 ('o'):  
+- 'e' != 'o' → cost = 1 + min(prev_row[2]=3, curr_row[1]=4, prev_row[1]=3) = 4  
+- curr_row[2] = 4
+
+j=3 ('s'):  
+- 'e' != 's' → cost = 1 + min(prev_row[3]=2, curr_row[2]=4, prev_row[2]=3) = 3  
+- curr_row[3] = 3
+
+After i=5:  
+prev_row = [5, 4, 4, 3]
+
+---
+
+🏁 Final result:  
+Minimum edit distance = 3

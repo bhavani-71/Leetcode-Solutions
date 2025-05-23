@@ -1,0 +1,191 @@
+description: |
+  📘 LeetCode: 76  
+  📌 Title: Minimum Window Substring  
+  🔗 Link: https://leetcode.com/problems/minimum-window-substring/
+
+  🧩 Problem Statement:  
+  Given strings `s` and `t`, find the minimum window substring in `s` which contains all characters of `t` (including duplicates). Return empty string if no such window exists.
+
+  🧱 Components:  
+  - Input:  
+    - `s`: source string  
+    - `t`: target string containing required characters  
+  - Output: Shortest substring of `s` containing all characters from `t`  
+  - Data structures:  
+    - Frequency Counter for `t` characters (`t_d`)  
+    - Sliding window frequency dictionary (`w_d`)  
+  - Variables:  
+    - `have`: count of characters meeting frequency requirement  
+    - `need`: total distinct characters to match (length of `t_d`)  
+    - `l`: left pointer of sliding window  
+    - `res`: stores best window indices and length
+
+  💡 Approach (Sliding Window + Two Pointers):  
+  - Expand window by moving right pointer `i`, count chars in `w_d`  
+  - When a character's count matches required count in `t_d`, increment `have`  
+  - Once `have == need`, try shrinking window from left to find smaller valid window  
+  - Update result if current window smaller  
+  - Shrink window by moving left pointer `l`, update counts and `have` if below required  
+  - Continue until right pointer reaches end of `s`
+
+  ⏱️ Time Complexity: O(N) where N = len(s)  
+  🧠 Space Complexity: O(M) where M = number of unique chars in t
+
+  🔍 Detailed Code Trace Example:  
+  
+  Example: s = "ADOBECODEBANC", t = "ABC"
+
+  Initial setup:
+  - target_counts = {'A':1, 'B':1, 'C':1}
+  - need = 3 (distinct chars in t)
+  - have = 0
+  - window_counts = {}
+  - left = 0
+  - result_range = [-1, -1]
+  - result_length = infinity
+
+  Step-by-step window expansion and shrinking:
+
+  i=0 ('A'):
+  - window_counts = {'A':1}
+  - 'A' count matches target → have=1
+  - have != need → continue expanding
+
+  i=1 ('D'):
+  - window_counts = {'A':1, 'D':1}
+  - 'D' not in target → have still 1
+
+  i=2 ('O'):
+  - window_counts = {'A':1, 'D':1, 'O':1}
+  - 'O' not in target → have still 1
+
+  i=3 ('B'):
+  - window_counts = {'A':1, 'D':1, 'O':1, 'B':1}
+  - 'B' count matches target → have=2
+
+  i=4 ('E'):
+  - window_counts = {'A':1, 'D':1, 'O':1, 'B':1, 'E':1}
+  - 'E' not in target → have still 2
+
+  i=5 ('C'):
+  - window_counts = {'A':1, 'D':1, 'O':1, 'B':1, 'E':1, 'C':1}
+  - 'C' count matches target → have=3 (all matched)
+
+  Now have == need, try to shrink from left:
+
+  - Window is s[0:5] = "ADOBEC" (length 6)
+  - Update result_range to [0, 5], result_length=6
+
+  Shrink left:
+  - Remove 'A' count → window_counts['A'] = 0 < target_counts['A']
+  - have = 2 (lost a needed char)
+  - left = 1
+
+  Expand again:
+
+  i=6 ('O'):
+  - window_counts = {..., 'O':2}
+  - No change to have (already accounted)
+
+  i=7 ('D'):
+  - window_counts = {..., 'D':2}
+  - No change to have
+
+  i=8 ('E'):
+  - window_counts = {..., 'E':2}
+  - No change to have
+
+  i=9 ('B'):
+  - window_counts = {..., 'B':2}
+  - 'B' count still satisfies target → have still 2
+
+  i=10 ('A'):
+  - window_counts = {..., 'A':1}
+  - 'A' count matches target → have=3
+
+  have == need, try shrinking:
+
+  - Window s[1:10] = "DOBECODEBA" length 10 (not smaller than 6)
+  - Shrink from left:
+
+    Remove 'D' at s[1]:
+    - window_counts['D'] = 1 (still >0)
+    - have still 3
+    - left = 2
+
+    Window s[2:10] = "OBECODEBA" length 9 (not smaller)
+
+    Remove 'O' at s[2]:
+    - window_counts['O'] = 1
+    - have still 3
+    - left = 3
+
+    Window s[3:10] = "BECODEBA" length 8 (not smaller)
+
+    Remove 'B' at s[3]:
+    - window_counts['B'] = 1 (still >=1)
+    - have still 3
+    - left = 4
+
+    Window s[4:10] = "ECODEBA" length 7 (not smaller)
+
+    Remove 'E' at s[4]:
+    - window_counts['E'] = 1
+    - have still 3
+    - left = 5
+
+    Window s[5:10] = "CODEBA" length 6 (equal to current best)
+
+    Remove 'C' at s[5]:
+    - window_counts['C'] = 0 < target_counts['C']
+    - have = 2 (lost a char)
+    - left = 6
+
+  Continue expanding:
+
+  i=11 ('N'):
+  - window_counts updated with 'N':1
+  - have still 2
+
+  i=12 ('C'):
+  - window_counts['C'] = 1
+  - 'C' count matches target → have=3
+
+  Shrink window again:
+
+  - Window s[6:12] = "ODEBANC" length 7 (not smaller)
+
+  Shrink from left:
+
+  Remove 'O' at s[6]:
+  - window_counts['O'] = 0 < needed (not needed)
+  - have still 3
+  - left = 7
+
+  Window s[7:12] = "DEBANC" length 6
+
+  Remove 'D' at s[7]:
+  - window_counts['D'] = 0
+  - have still 3
+  - left = 8
+
+  Window s[8:12] = "EBANC" length 5 (smaller)
+
+  Update result_range = [8,12], result_length = 5
+
+  Remove 'E' at s[8]:
+  - window_counts['E'] = 0
+  - have still 3
+  - left = 9
+
+  Window s[9:12] = "BANC" length 4 (smaller)
+
+  Update result_range = [9,12], result_length = 4
+
+  Remove 'B' at s[9]:
+  - window_counts['B'] = 0 < target_counts['B']
+  - have = 2 (lost a char)
+  - left = 10
+
+  End of string reached, result substring is s[9:12] = "BANC"
+

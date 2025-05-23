@@ -56,7 +56,7 @@ The longest path can be either 4 → 2 → 1 → 3 or 5 → 2 → 1 → 3, both 
 
 ✅ Code Trace (Partial):
 
-At node 1:  
+At node 1:  a
 - Left subtree (node 2):  
   - Left child 4: height = 1  
   - Right child 5: height = 1  

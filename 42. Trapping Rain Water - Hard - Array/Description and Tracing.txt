@@ -1,0 +1,136 @@
+LeetCode: 42
+Title: Trapping Rain Water
+Link: https://leetcode.com/problems/trapping-rain-water/
+
+---
+
+Problem Statement:
+🌧️💧 Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+
+---
+
+Example:
+💦 Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]  
+💦 Output: 6  
+💦 Explanation: Water trapped between bars forms 6 units of rainwater.
+
+---
+
+Detailed Explanation:
+🏞️ Imagine the bars as walls with different heights. When it rains, water will be trapped between these bars.  
+🌊 The amount of water trapped on top of a bar depends on the tallest bars on its left and right sides.  
+📏 For each position, the water trapped = min(max height on left, max height on right) - height of current bar (if positive).  
+🧮 The goal is to sum this trapped water for all bars to get the total trapped rainwater.
+
+---
+
+Brute Force Approach:
+🔍 For each bar, scan all bars to the left to find the maximum height on the left.  
+🔍 Then scan all bars to the right to find the maximum height on the right.  
+➖ Calculate water trapped at the current bar and add to total.  
+⏳ Time Complexity: O(n²) — nested loops for each bar.  
+💾 Space Complexity: O(1)
+
+---
+
+Optimized Two-Pointer Approach:
+↔️ Use two pointers: one at the start (left) and one at the end (right) of the array.  
+📈 Maintain two variables to store the maximum height seen so far from the left and from the right.  
+🔄 Move the pointer with the smaller height inward.  
+💧 At each step, calculate trapped water at the pointer if current height is less than max height seen so far from that side.  
+✅ This method finds trapped water in one pass through the array.  
+⏳ Time Complexity: O(n)  
+💾 Space Complexity: O(1)
+
+---
+
+Code Trace (Detailed):
+
+Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+
+Initial setup:  
+👈 left_ptr = 0 (points to 0)  
+👉 right_ptr = 11 (points to 1)  
+⬆️ left_max = 0  
+⬆️ right_max = 0  
+💧 trapped_water = 0
+
+Iteration 1:  
+👈 height[left_ptr] = 0, 👉 height[right_ptr] = 1  
+⚖️ Since 0 < 1, process left side  
+⬆️ height[left_ptr] (0) >= left_max (0)? Yes → Update left_max = 0  
+➡️ Move left_ptr to 1
+
+Iteration 2:  
+👈 left_ptr = 1 (height=1), 👉 right_ptr = 11 (height=1)  
+⚖️ 1 == 1 → process right side  
+⬆️ height[right_ptr] (1) >= right_max (0)? Yes → Update right_max = 1  
+⬅️ Move right_ptr to 10
+
+Iteration 3:  
+👈 left_ptr = 1 (height=1), 👉 right_ptr = 10 (height=2)  
+⚖️ 1 < 2 → process left side  
+⬆️ height[left_ptr] (1) >= left_max (0)? Yes → Update left_max = 1  
+➡️ Move left_ptr to 2
+
+Iteration 4:  
+👈 left_ptr = 2 (height=0), 👉 right_ptr = 10 (height=2)  
+⚖️ 0 < 2 → process left side  
+💧 height[left_ptr] (0) < left_max (1)? Yes → trapped_water += 1 - 0 = 1  
+💧 trapped_water = 1  
+➡️ Move left_ptr to 3
+
+Iteration 5:  
+👈 left_ptr = 3 (height=2), 👉 right_ptr = 10 (height=2)  
+⚖️ 2 == 2 → process right side  
+⬆️ height[right_ptr] (2) >= right_max (1)? Yes → Update right_max = 2  
+⬅️ Move right_ptr to 9
+
+Iteration 6:  
+👈 left_ptr = 3 (height=2), 👉 right_ptr = 9 (height=1)  
+⚖️ 2 > 1 → process right side  
+💧 height[right_ptr] (1) < right_max (2)? Yes → trapped_water += 2 - 1 = 1  
+💧 trapped_water = 2  
+⬅️ Move right_ptr to 8
+
+Iteration 7:  
+👈 left_ptr = 3 (height=2), 👉 right_ptr = 8 (height=2)  
+⚖️ 2 == 2 → process right side  
+⬆️ height[right_ptr] (2) >= right_max (2)? Yes → Update right_max = 2  
+⬅️ Move right_ptr to 7
+
+Iteration 8:  
+👈 left_ptr = 3 (height=2), 👉 right_ptr = 7 (height=3)  
+⚖️ 2 < 3 → process left side  
+⬆️ height[left_ptr] (2) >= left_max (1)? Yes → Update left_max = 2  
+➡️ Move left_ptr to 4
+
+Iteration 9:  
+👈 left_ptr = 4 (height=1), 👉 right_ptr = 7 (height=3)  
+⚖️ 1 < 3 → process left side  
+💧 height[left_ptr] (1) < left_max (2)? Yes → trapped_water += 2 - 1 = 1  
+💧 trapped_water = 3  
+➡️ Move left_ptr to 5
+
+Iteration 10:  
+👈 left_ptr = 5 (height=0), 👉 right_ptr = 7 (height=3)  
+⚖️ 0 < 3 → process left side  
+💧 height[left_ptr] (0) < left_max (2)? Yes → trapped_water += 2 - 0 = 2  
+💧 trapped_water = 5  
+➡️ Move left_ptr to 6
+
+Iteration 11:  
+👈 left_ptr = 6 (height=1), 👉 right_ptr = 7 (height=3)  
+⚖️ 1 < 3 → process left side  
+💧 height[left_ptr] (1) < left_max (2)? Yes → trapped_water += 2 - 1 = 1  
+💧 trapped_water = 6  
+➡️ Move left_ptr to 7
+
+End:  
+👈 left_ptr = 7, 👉 right_ptr = 7 → pointers meet, loop ends  
+💦 Total trapped_water = 6 units
+
+---
+
+Final Answer:  
+💧 The total amount of trapped rain water is 6.

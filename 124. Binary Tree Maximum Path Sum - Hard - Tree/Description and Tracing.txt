@@ -1,0 +1,90 @@
+https://leetcode.com/problems/binary-tree-maximum-path-sum/
+
+🧩 Problem Statement:
+
+Given a binary tree, find the maximum path sum. A path is any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The path must contain at least one node and does not need to go through the root.
+
+---
+
+💡 Example:
+
+Consider the binary tree:
+       1
+      / \
+     2   3
+
+Possible paths and sums:
+- 2 → 1 → 3 = 6
+- 2 alone = 2
+- 3 alone = 3
+- 1 alone = 1
+
+Maximum path sum is 6 (2 + 1 + 3).
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Approach:
+- For every node, calculate all paths passing through it.
+- This involves calculating maximum sum paths from left and right subtrees and considering the node value.
+- Then combine these to find the global max.
+
+⏱️ Time Complexity: O(N²) in worst case (e.g., skewed tree) due to repeated computations.  
+🧠 Space Complexity: O(N) for recursion stack.
+
+---
+
+🚀 Optimized Approach (Postorder DFS):
+
+✅ Strategy:
+- Use post-order traversal (DFS).
+- For each node:
+  - Recursively find max gain from left and right children (ignore negatives).
+  - Calculate current path sum = node value + left gain + right gain.
+  - Update global max path sum if current path sum is higher.
+  - Return node value + max(left gain, right gain) to parent to allow only one side path.
+
+⏱️ Time Complexity: O(N), each node visited once.  
+🧠 Space Complexity: O(H), H = height of tree, for recursion stack.
+
+
+✅ Code Trace:
+
+Given Tree:
+       1
+      / \
+     2   3
+
+Start DFS at node 1:
+
+🔵 Node 1 calls DFS on left child (node 2):
+
+  🔵 Node 2 calls DFS on left child: None → returns 0  
+  🔵 Node 2 calls DFS on right child: None → returns 0  
+  🟢 left_gain = max(0, 0) = 0  
+  🟢 right_gain = max(0, 0) = 0  
+  🔴 current_path_sum = 2 + 0 + 0 = 2  
+  🔴 Update max_sum: max(-inf, 2) = 2  
+  🔸 Return to node 1: 2 + max(0,0) = 2  
+
+🔵 Node 1 calls DFS on right child (node 3):
+
+  🔵 Node 3 calls DFS on left child: None → returns 0  
+  🔵 Node 3 calls DFS on right child: None → returns 0  
+  🟢 left_gain = max(0, 0) = 0  
+  🟢 right_gain = max(0, 0) = 0  
+  🔴 current_path_sum = 3 + 0 + 0 = 3  
+  🔴 Update max_sum: max(2, 3) = 3  
+  🔸 Return to node 1: 3 + max(0,0) = 3  
+
+🔵 Back at node 1:
+
+  🟢 left_gain = 2 (from node 2)  
+  🟢 right_gain = 3 (from node 3)  
+  🔴 current_path_sum = 1 + 2 + 3 = 6  
+  🔴 Update max_sum: max(3, 6) = 6  
+  🔸 Return to caller (root, so no further use): 1 + max(2,3) = 4  
+
+🏁 Final max path sum = 6
+```

@@ -1,0 +1,59 @@
+```yaml
+description: |
+  🎮 Problem: XOR Game
+
+  👩‍🏫 You are playing a game with an array of integers `nums`. 
+  Two players take turns removing one element from the array. 
+  The game continues until the XOR of the remaining elements becomes zero, 
+  at which point the current player **loses**.
+
+  👨‍🔬 The goal is to determine whether the **first player** can guarantee a win 
+  assuming both players play optimally.
+
+  🔍 Example:
+    Input: nums = [1, 1, 2]
+    XOR of all elements = 1 ^ 1 ^ 2 = 2 ❌ (not zero)
+    Number of elements = 3 (odd) → First player will **lose** if both play optimally
+
+    Input: nums = [1, 1]
+    XOR = 0 ✅ → First player wins immediately
+
+brute_force_approach: |
+  🚫 A brute-force approach would involve simulating all possible moves and 
+  checking every possible state of the game recursively.
+  ❌ However, due to the exponential number of game states, this is inefficient (O(2^n)).
+
+optimized_approach: |
+  ✅ Optimized Logic:
+    - Calculate the total XOR of the array.
+    - If total XOR is already 0 ➡️ First player wins immediately.
+    - Else:
+      - If length of array is even ➡️ First player can always force a win.
+      - If length is odd ➡️ First player cannot guarantee a win.
+
+  💡 Why?
+    - XOR is associative and commutative. If the XOR is 0 at any point,
+      the current player loses.
+    - With even number of elements, the first player can mirror the second player's moves 
+      and always maintain a non-zero XOR for the opponent.
+
+time_space_complexity: |
+  🕒 Time Complexity: O(n) — Single pass through the array to compute XOR.
+  📦 Space Complexity: O(1) — Constant space used.
+
+code_trace: |
+  Input: [1, 1, 2]
+  Iteration 🔁:
+    i=0, num=1, xor_sum=0 ^ 1 = 1
+    i=1, num=1, xor_sum=1 ^ 1 = 0
+    i=2, num=2, xor_sum=0 ^ 2 = 2
+  Final xor_sum = 2 ❌
+  Length of array = 3 (odd)
+  Output = False ❌ First player cannot guarantee a win
+
+  Input: [1, 1]
+  Iteration 🔁:
+    i=0, num=1, xor_sum=0 ^ 1 = 1
+    i=1, num=1, xor_sum=1 ^ 1 = 0
+  Final xor_sum = 0 ✅
+  Output = True ✅ First player wins immediately

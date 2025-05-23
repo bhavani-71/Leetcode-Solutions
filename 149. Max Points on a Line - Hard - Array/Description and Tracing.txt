@@ -1,0 +1,48 @@
+https://leetcode.com/problems/max-points-on-a-line
+description: |
+  🎯 Problem: Max Points on a Line
+
+  🧮 You're given a list of points on a 2D plane. Your task is to find the maximum number of points that lie on the same straight line.
+
+  💡 Example:
+    Input: [[1,1],[2,2],[3,3]]
+    ➕ These points lie on the line y = x.
+    Output: 3 ✅
+
+brute_force_approach: |
+  🚫 Check every pair of points, determine the line formed, and then count how many points lie on that line.
+  ❗ Time complexity: O(n^3) — For each pair, check all other points.
+
+brute_force_complexity: |
+  🧠 Brute Force Approach Complexity:
+
+  🕒 Time Complexity: O(n^3)
+  - For each pair of points (O(n^2)), check every other point (O(n)) to see if it lies on the same line.
+  - Total combinations = n * (n-1) * (n-2) ≈ O(n^3)
+
+  📦 Space Complexity: O(1)
+  - No extra space used apart from a few counters.
+
+optimized_approach: |
+  ✅ Fix one point and calculate the slope of lines it forms with every other point.
+  🧮 Use a hashmap to count how many points share the same slope w.r.t. the current point.
+  🔁 Repeat for every point.
+
+  🔄 Special cases:
+    - Duplicate points are counted separately.
+    - Vertical lines (undefined slope) are handled using a unique key like "inf".
+
+time_space_complexity: |
+  🕒 Time Complexity: O(n^2)
+  📦 Space Complexity: O(n) — for the slope count hashmap per point
+
+code_trace: |
+  Input: [[1,1], [2,2], [3,3], [1,1]]
+
+  Iteration with i = 0 (base point = [1,1]):
+    - j = 1 → [2,2] → slope = (2-1)/(2-1) = 1 → slope_count[1] = 1
+    - j = 2 → [3,3] → slope = (3-1)/(3-1) = 1 → slope_count[1] = 2
+    - j = 3 → [1,1] = duplicate → duplicates = 2
+    max points with base [1,1] = 2 (slope_count[1]) + 2 (duplicates) = 4
+
+  Result = 4 ✅

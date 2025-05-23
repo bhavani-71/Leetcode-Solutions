@@ -1,0 +1,63 @@
+https://leetcode.com/problems/word-break/
+
+🧩 Problem Statement:
+
+Given a string `s` and a dictionary of words `wordDict`, determine if `s` can be segmented into a space-separated sequence of one or more dictionary words.
+
+Each word in `wordDict` can be reused multiple times.  
+Return `True` if such a segmentation is possible, otherwise return `False`.
+
+---
+
+🪓 Brute Force Approach (Recursion without memoization):
+
+🔍 Approach:
+- Try every possible prefix of `s`.
+- If the prefix is in the dictionary, recursively check the remaining suffix.
+- If any path leads to successful segmentation, return True.
+- Otherwise, backtrack and try other splits.
+
+⏱️ Time Complexity: Exponential, O(2ⁿ), where n = len(s)  
+🧠 Space Complexity: O(n) for recursion depth
+
+---
+
+💡 Optimized Approach (Trie + DFS + Memoization):
+
+✅ Strategy:
+- Insert all dictionary words into a Trie for efficient prefix lookup.
+- Use DFS to check for valid word splits starting from index 0.
+- At each step, match the current prefix using the Trie.
+- If a word ends at the current index, recursively check the suffix.
+- Use memoization to cache results for previously computed indices.
+
+⏱️ Time Complexity: O(n²) in the worst case (with memoization)  
+🧠 Space Complexity: O(n) for recursion + O(n) for memoization
+
+---
+
+🚀 Code Trace Example:
+
+s = "leetcode", wordDict = ["leet", "code"]  
+
+Trie:
+              (root)
+             /      \
+            l        c
+            |        |
+            e        o
+            |        |
+            e        d
+            |        |
+            t●       e●
+
+
+- Start at index 0:  
+  - "l" → "le" → "lee" → "leet" ✅ (found in Trie) → dfs(4)  
+- Start at index 4:  
+  - "c" → "co" → "cod" → "code" ✅ → dfs(8)  
+- index == len(s) → return True
+
+🏁 Final Answer: True
+
+---

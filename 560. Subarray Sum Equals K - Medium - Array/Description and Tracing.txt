@@ -1,0 +1,66 @@
+description: |
+  📘 LeetCode: Subarray Sum Equals K  
+  📌 Title: Subarray Sum Equals K  
+  🔗 Link: https://leetcode.com/problems/subarray-sum-equals-k/
+
+  🧩 Problem Statement:  
+  Given an integer array `nums` and an integer `k`, return the total number of subarrays whose sum equals to `k`.
+
+  🧱 Components:  
+  - Input:  
+    - `nums`: List of integers  
+    - `k`: Integer target sum  
+  - Output: Integer count of subarrays whose sum = `k`  
+  - Data Structure: HashMap to store prefix sums and their counts
+
+  💡 Brute Force Approach:  
+  - Iterate through all subarrays using two nested loops  
+  - For each subarray, compute the sum  
+  - If sum equals `k`, increment the counter  
+  ⏱️ Time Complexity: O(N²)  
+  🧠 Space Complexity: O(1)
+
+  🚀 Optimized Approach (Prefix Sum + HashMap):  
+  - Use a running prefix sum while iterating  
+  - Keep a dictionary `prefix_sum_counts` that maps prefix sums to their counts  
+  - For each element, check if `(prefix_sum - k)` exists in the map  
+    → If yes, increment the result by the count of that sum  
+  - This approach counts how many subarrays sum to `k` ending at current index
+
+  ⏱️ Time Complexity: O(N), where N is length of `nums`  
+  🧠 Space Complexity: O(N), for the hashmap storing prefix sums
+
+detailed_trace: |
+  Example:  
+  nums = [1, 2, 3], k = 3
+
+  Initialize:  
+  - 🧾 total_subarrays = 0  
+  - 🔢 current_prefix_sum = 0  
+  - 📦 prefix_sum_counts = {0: 1}  (base case for subarrays starting from index 0)
+
+  🔁 Iterate through nums:
+
+  🧩 num = 1  
+  ➕ current_prefix_sum = 1  
+  🔍 Check if (1 - 3 = -2) exists in prefix_sum_counts ❌  
+  📌 Update prefix_sum_counts = {0:1, 1:1}  
+  🧾 total_subarrays = 0
+
+  🧩 num = 2  
+  ➕ current_prefix_sum = 3  
+  🔍 Check if (3 - 3 = 0) ✅ found → add prefix_sum_counts[0] = 1  
+  🧾 total_subarrays = 1  
+  📌 Update prefix_sum_counts = {0:1, 1:1, 3:1}
+
+  🧩 num = 3  
+  ➕ current_prefix_sum = 6  
+  🔍 Check if (6 - 3 = 3) ✅ found → add prefix_sum_counts[3] = 1  
+  🧾 total_subarrays = 2  
+  📌 Update prefix_sum_counts = {0:1, 1:1, 3:1, 6:1}
+
+🎯 Result:  
+There are 2 subarrays with sum = 3 → [1,2] and [3]
+
+💡 Explanation:  
+By using a hashmap to track how often each prefix sum has occurred, we efficiently count all valid subarrays ending at each index without nested loops.

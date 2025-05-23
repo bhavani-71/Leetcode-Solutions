@@ -1,0 +1,42 @@
+📘 LeetCode: 273  
+📌 Title: Integer to English Words  
+🔗 Link: https://leetcode.com/problems/integer-to-english-words/
+
+🧩 Problem Statement:  
+Convert a non-negative integer to its English words representation. The input is guaranteed to be less than 2³¹ - 1.
+
+🧱 Components:  
+- Input: Integer `n` (0 ≤ n ≤ 2³¹ - 1)  
+- Output: English word representation of `n`  
+- Helper function: Recursively converts 3-digit numbers  
+- Predefined arrays for:
+  - Numbers below 20  
+  - Tens multiples  
+  - Thousands/millions/billions scale
+
+💡 Brute Force Approach:  
+- Convert the number to a string  
+- Parse and split based on digit places (units, tens, hundreds, etc.)  
+- Manually map digits to words  
+- Handle special cases for 10-19  
+- ❌ Inefficient, error-prone, and verbose  
+- ❌ No modularity and difficult to maintain
+
+🚀 Optimized Approach (Used in Code):  
+- 🔁 Iterate over chunks of 3 digits (thousands)  
+- 🧠 Use recursion (`helper`) to convert each 3-digit segment  
+- 🧱 Append correct scale from `["", "Thousand", "Million", "Billion"]`  
+- ✅ Modular, clean, and scalable  
+- ✅ Efficient with O(log n) time (base 1000 due to chunking)
+
+🔍 Code Trace Example for Input: 1234567  
+💭 Chunks: ["1", "234", "567"] (Million, Thousand, base)  
+🔁 Iteration 1:  
+  🔹 helper(567) → "Five Hundred Sixty Seven"  
+  🔹 Append "" → "Five Hundred Sixty Seven"  
+🔁 Iteration 2:  
+  🔹 helper(234) → "Two Hundred Thirty Four"  
+  🔹 Append "Thousand" → "Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"  
+🔁 Iteration 3:  
+  🔹 helper(1) → "One"  
+  🔹 Append "Million" → "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"  

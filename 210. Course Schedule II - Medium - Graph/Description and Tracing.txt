@@ -1,0 +1,79 @@
+description: |
+  📘 LeetCode: Course Schedule II  
+  📌 Title: Course Schedule II  
+  🔗 Link: https://leetcode.com/problems/course-schedule-ii/
+
+  🧩 Problem Statement:  
+  Given the total number of courses `numCourses` and a list of prerequisite pairs `prerequisites`, return an ordering of courses you should take to finish all courses. If there are multiple valid orderings, return any of them. If it's impossible to finish all courses (due to cycles), return an empty list.
+
+  🧱 Components:  
+  - Input:  
+    - `numCourses`: integer, total courses numbered from 0 to `numCourses - 1`  
+    - `prerequisites`: list of pairs `[a, b]` meaning you must take course `b` before course `a`  
+  - Output:  
+    - List of integers representing course order or empty list if no valid order  
+  - Approach: Graph + Topological Sort using DFS with cycle detection
+
+  💡 Brute Force Approach:  
+  - Generate all permutations of courses and check validity  
+  - Time Complexity: O(N!) (factorial) — impractical for large inputs ⏳  
+  - Space Complexity: O(N) for storing permutations
+
+  🚀 Optimized Approach (DFS + Topological Sort):  
+  - Model courses and prerequisites as a directed graph (adjacency list)  
+  - Use DFS traversal to detect cycles and produce topological order  
+  - Maintain a state array for each node:  
+    - 0 = unvisited  
+    - 1 = visiting (in recursion stack)  
+    - 2 = visited (processed)  
+  - If a cycle is detected (visiting a node currently in recursion stack), return empty list  
+  - Otherwise, append nodes to result list post DFS call  
+  - Reverse the result list to get the correct order
+
+  ⏱️ Time Complexity: O(V + E), V = numCourses, E = number of prerequisites  
+  🧠 Space Complexity: O(V + E) for adjacency list, recursion stack, and state array
+
+detailed_trace: |
+  Example:  
+  numCourses = 4  
+  prerequisites = [[1,0], [2,0], [3,1], [3,2]]
+
+  Initialize:  
+  - adjacency = {0: [1,2], 1: [3], 2: [3]}  
+  - states = [0,0,0,0]  # all unvisited  
+  - order = []
+
+  DFS traversal steps:
+
+  Course 0:  
+  - states[0] = 1 (visiting)  
+  - Visit neighbors [1,2]
+
+    Course 1:  
+    - states[1] = 1  
+    - Visit neighbor [3]
+
+      Course 3:  
+      - states[3] = 1  
+      - No neighbors  
+      - states[3] = 2 (visited)  
+      - order = [3]  
+
+    - states[1] = 2  
+    - order = [3, 1]
+
+    Course 2:  
+    - states[2] = 1  
+    - Visit neighbor [3] (already visited, states[3] = 2) → continue  
+    - states[2] = 2  
+    - order = [3, 1, 2]
+
+  - states[0] = 2  
+  - order = [3, 1, 2, 0]
+
+  Courses 1, 2, 3 are already visited.
+
+  Reverse order: [0, 2, 1, 3]
+
+  🎯 Result:  
+  One valid course order is [0, 2, 1, 3].

@@ -1,0 +1,147 @@
+LeetCode #3 - Longest Substring Without Repeating Characters  
+🔗 https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+---
+
+🌳 Example Tree (for conceptual visualization, not directly related to the problem):
+
+        a
+       / \
+      b   c
+         / \
+        d   e
+
+---
+
+🧩 Problem Statement:
+
+Given a string s, find the length of the longest substring without repeating characters.
+
+A substring is a contiguous sequence of characters within the string.
+
+---
+
+💡 Example 1:
+Input: s = "abcabcbb"  
+Output: 3  
+Explanation: The answer is "abc", with the length of 3.
+
+💡 Example 2:
+Input: s = "bbbbb"  
+Output: 1  
+Explanation: The answer is "b", with the length of 1.
+
+💡 Example 3:
+Input: s = "pwwkew"  
+Output: 3  
+Explanation: The answer is "wke", with the length of 3.  
+Note: "pwke" is a subsequence, not a substring.
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Approach:
+- Try all possible substrings of the given string.
+- For each substring, check if all characters are unique.
+- Track and return the maximum length of all valid substrings.
+
+🧠 Pseudocode:
+maxLength = 0  
+for i in range(len(s)):  
+    for j in range(i, len(s)):  
+        if substring s[i:j+1] has all unique characters:  
+            maxLength = max(maxLength, j - i + 1)
+
+⏱️ Time Complexity: O(n^3)  
+- Generating all substrings = O(n^2)  
+- Checking uniqueness = O(n)  
+Total = O(n^3)
+
+🧠 Space Complexity: O(min(n, m))  
+- Storing characters in a set to check uniqueness  
+- m = size of character set (e.g., 26 for lowercase English)
+
+---
+
+🚀 Optimized Approach — Sliding Window + Hash Map
+
+✅ Strategy:
+- Use a sliding window with two pointers: one for the start and one for the current character.
+- Maintain a dictionary to keep track of the last index at which each character was seen.
+- If a character repeats inside the window, move the start pointer just after its previous index.
+- Always calculate and update the maximum length of the current valid window.
+
+🧠 Pseudocode:
+last_seen_index = {}  
+window_start = 0  
+max_length = 0
+
+for current_index, character in enumerate(input_string):  
+    if character in last_seen_index and last_seen_index[character] >= window_start:  
+        window_start = last_seen_index[character] + 1  
+    last_seen_index[character] = current_index  
+    current_window_length = current_index - window_start + 1  
+    max_length = max(max_length, current_window_length)
+
+⏱️ Time Complexity: O(n)  
+- Each character is visited at most twice (once added, once removed from window)
+
+🧠 Space Complexity: O(min(n, m))  
+- Hash map stores the last seen index of each character
+
+---
+
+✅ Code Trace for s = "abcabcbb":
+
+Initialize:
+- last_seen_index = {}
+- window_start = 0
+- max_unique_length = 0
+
+Step 0 (i=0, char='a'):  
+- Not seen → continue  
+- Update last_seen_index['a'] = 0  
+- max_unique_length = max(0, 1) = 1
+
+Step 1 (i=1, char='b'):  
+- Not seen → continue  
+- Update last_seen_index['b'] = 1  
+- max_unique_length = max(1, 2) = 2
+
+Step 2 (i=2, char='c'):  
+- Not seen → continue  
+- Update last_seen_index['c'] = 2  
+- max_unique_length = max(2, 3) = 3
+
+Step 3 (i=3, char='a'):  
+- Seen at index 0 ≥ window_start(0) → move window_start to 1  
+- Update last_seen_index['a'] = 3  
+- Current window length = 3 - 1 + 1 = 3  
+- max_unique_length = max(3, 3) = 3
+
+Step 4 (i=4, char='b'):  
+- Seen at index 1 ≥ window_start(1) → move window_start to 2  
+- Update last_seen_index['b'] = 4  
+- Current window length = 4 - 2 + 1 = 3  
+- max_unique_length = max(3, 3) = 3
+
+Step 5 (i=5, char='c'):  
+- Seen at index 2 ≥ window_start(2) → move window_start to 3  
+- Update last_seen_index['c'] = 5  
+- Current window length = 5 - 3 + 1 = 3  
+- max_unique_length = max(3, 3) = 3
+
+Step 6 (i=6, char='b'):  
+- Seen at index 4 ≥ window_start(3) → move window_start to 5  
+- Update last_seen_index['b'] = 6  
+- Current window length = 6 - 5 + 1 = 2  
+- max_unique_length = max(3, 2) = 3
+
+Step 7 (i=7, char='b'):  
+- Seen at index 6 ≥ window_start(5) → move window_start to 7  
+- Update last_seen_index['b'] = 7  
+- Current window length = 7 - 7 + 1 = 1  
+- max_unique_length = max(3, 1) = 3
+
+Final Output: 3 (longest substring without repeating characters is "abc")

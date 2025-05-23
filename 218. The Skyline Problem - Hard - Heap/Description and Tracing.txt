@@ -1,0 +1,136 @@
+LeetCode: 218  
+Title: The Skyline Problem  
+Link: https://leetcode.com/problems/the-skyline-problem/  
+
+🧩 Problem Statement:  
+Given a list of buildings represented as [left, right, height], compute the skyline formed by these buildings. The skyline is a list of key points [x, height] that represent the outer contour of the combined buildings.
+
+---  
+problem_explanation: |
+  The Skyline Problem involves determining the silhouette formed by a collection of rectangular buildings when viewed from a distance.
+
+  You are given a list of buildings, each described by three integers: [left, right, height].
+  - left: x-coordinate where the building starts
+  - right: x-coordinate where the building ends
+  - height: height of the building
+
+  The goal is to find the critical points in the skyline — points where the height changes. The output is a list of [x, height] coordinates that describe the skyline outline:
+  - Each point marks a change in the skyline height.
+  - The skyline begins at the leftmost building and ends at the rightmost building.
+  - Between these points, the height remains constant.
+
+  Challenges:
+  - Buildings may overlap.
+  - Multiple buildings can start or end at the same x-coordinate.
+  - Efficiently track the maximum height at every x-coordinate as buildings start and end.
+
+  Example:
+  Buildings: [[2, 9, 10], [3, 7, 15], [5, 12, 12]]
+  Skyline: [[2, 10], [3, 15], [7, 12], [12, 0]]
+
+  Interpretation:
+  - At x=2, skyline rises to 10.
+  - At x=3, taller building starts, raising skyline to 15.
+  - At x=7, tallest building ends, skyline lowers to 12.
+  - At x=12, all buildings end, skyline drops to 0.
+
+
+🪓 Brute Force Approach:  
+🔍 Approach:  
+- For each x-coordinate between the smallest left and largest right, find the max height of all buildings covering that x.  
+- Append the height changes to the result list.  
+- This is simple but inefficient as it requires scanning all buildings for every coordinate.
+
+⏱️ Time Complexity: O(N * W), where N is number of buildings and W is width of skyline (max right - min left)  
+🧠 Space Complexity: O(W) for storing the heights.
+
+---  
+
+💡 Optimized Approach (Line Sweep + Max Heap):  
+
+✅ Strategy:  
+- Convert building edges into events: start points with negative height and end points with zero height.  
+- Sort all points by x-coordinate; if tie, start points before end points.  
+- Use a max heap to keep track of active building heights.  
+- Iterate over points:  
+  - If start point, add building height to heap.  
+  - If end point, remove buildings that have ended.  
+- At each point, if the current max height changes from previous, record the [x, height] in result.  
+
+⏱️ Time Complexity: O(N log N) due to sorting and heap operations.  
+🧠 Space Complexity: O(N) for events, heap, and output.
+
+🏗️ Code Trace for Skyline Problem Example:  
+
+Buildings = [[2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]]
+
+1️⃣ Construct Points:  
+- Start points with negative heights (for max heap):  
+  (2, -10, 9), (3, -15, 7), (5, -12, 12), (15, -10, 20), (19, -8, 24)  
+- End points with height 0 (to mark removal):  
+  (7, 0, 0), (9, 0, 0), (12, 0, 0), (20, 0, 0), (24, 0, 0)  
+- Sorted points:  
+  [(2, -10, 9), (3, -15, 7), (5, -12, 12), (7, 0, 0), (9, 0, 0), (12, 0, 0), (15, -10, 20), (19, -8, 24), (20, 0, 0), (24, 0, 0)]
+
+2️⃣ Initialize heap with ground level:  
+- heap = [(0, ∞)]  
+
+3️⃣ Iterate points:  
+
+🔹 At x=2, h=-10:  
+- Push (-10,9) → heap = [(-10,9), (0,∞)]  
+- Current max height = 10  
+- Result updated: [[2,10]]  
+
+🔹 At x=3, h=-15:  
+- Push (-15,7) → heap = [(-15,7), (0,∞), (-10,9)]  
+- Max height = 15 (changed)  
+- Result updated: [[2,10],[3,15]]  
+
+🔹 At x=5, h=-12:  
+- Push (-12,12) → heap = [(-15,7), (-12,12), (-10,9), (0,∞)]  
+- Max height remains 15  
+- No change to result  
+
+🔹 At x=7, h=0 (end of building):  
+- Remove buildings ending ≤ 7:  
+  - Pop (-15,7) → heap now [(-12,12), (0,∞), (-10,9)]  
+- Max height changes to 12  
+- Result updated: [[2,10],[3,15],[7,12]]  
+
+🔹 At x=9, h=0 (end):  
+- Remove buildings ending ≤ 9:  
+  - Pop (-10,9) → heap = [(-12,12), (0,∞)]  
+- Max height still 12  
+- No change  
+
+🔹 At x=12, h=0 (end):  
+- Remove buildings ending ≤ 12:  
+  - Pop (-12,12) → heap = [(0,∞)]  
+- Max height changes to 0  
+- Result updated: [[2,10],[3,15],[7,12],[12,0]]  
+
+🔹 At x=15, h=-10:  
+- Push (-10,20) → heap = [(-10,20), (0,∞)]  
+- Max height changes to 10  
+- Result updated: [[2,10],[3,15],[7,12],[12,0],[15,10]]  
+
+🔹 At x=19, h=-8:  
+- Push (-8,24) → heap = [(-10,20), (0,∞), (-8,24)]  
+- Max height remains 10  
+- No change  
+
+🔹 At x=20, h=0 (end):  
+- Remove buildings ending ≤ 20:  
+  - Pop (-10,20) → heap = [(-8,24), (0,∞)]  
+- Max height changes to 8  
+- Result updated: [[2,10],[3,15],[7,12],[12,0],[15,10],[20,8]]  
+
+🔹 At x=24, h=0 (end):  
+- Remove buildings ending ≤ 24:  
+  - Pop (-8,24) → heap = [(0,∞)]  
+- Max height changes to 0  
+- Result updated: [[2,10],[3,15],[7,12],[12,0],[15,10],[20,8],[24,0]]  
+
+4️⃣ Final Skyline Result:  
+[[2,10],[3,15],[7,12],[12,0],[15,10],[20,8],[24,0]]

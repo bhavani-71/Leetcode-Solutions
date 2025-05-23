@@ -1,0 +1,77 @@
+description: |
+  📘 LeetCode: Palindrome Partitioning  
+  📌 Title: Palindrome Partitioning  
+  🔗 Link: https://leetcode.com/problems/palindrome-partitioning/
+
+  🧩 Problem Statement:  
+  Given a string `s`, partition `s` such that every substring of the partition is a palindrome. Return all possible palindrome partitionings of `s`.
+
+  🧱 Components:  
+  - Input:  
+    - `s`: string of lowercase English letters  
+  - Output:  
+    - List of lists of strings, where each list is a palindrome partition of `s`  
+  - Approach: Backtracking with palindrome checking
+
+  💡 Brute Force Approach:  
+  - Generate all possible partitions of the string (exponential in number) 🔄  
+  - For each partition, check if every substring is a palindrome 🔍  
+  - Time Complexity: O(N * 2^N) — generating all partitions is exponential, palindrome checking costs O(N) per substring ⏳  
+  - Space Complexity: O(N) recursion stack + output storage 📦
+
+  🚀 Optimized Approach (Backtracking + Pruning):  
+  - Use backtracking to generate partitions but prune paths where substring is not palindrome 🚫  
+  - Check palindrome substrings on the fly to avoid invalid partitions early ⚡  
+  - Optionally, use memoization or DP to cache palindrome checks for substrings 💾  
+  - Time Complexity: Still exponential in worst case due to possible partitions, but faster pruning reduces overhead in practice ⚖️  
+  - Space Complexity: O(N) recursion stack + output storage 📦
+
+detailed_trace: |
+  Example:  
+  s = "aab"
+
+  Initialize:  
+  - 📝 result = []  
+  - 🔍 current_partition = []  
+  - 🚦 start_index = 0
+
+  Step 1: start_index=0  
+  - Substring "a" (s[0:1]): palindrome → ✅ yes  
+    - current_partition = ["a"]  
+    - Recurse start_index=1 🔄
+
+  Step 2: start_index=1  
+  - Substring "a" (s[1:2]): palindrome → ✅ yes  
+    - current_partition = ["a","a"]  
+    - Recurse start_index=2 🔄
+
+  Step 3: start_index=2  
+  - Substring "b" (s[2:3]): palindrome → ✅ yes  
+    - current_partition = ["a","a","b"]  
+    - Recurse start_index=3 (end of string) 🏁  
+    - Append ["a","a","b"] to result ✔️  
+    - Backtrack to ["a","a"] 🔙
+
+  Step 3 backtracked: no more substrings at index 2  
+  - Backtrack to ["a"] 🔙
+
+  Step 2: try substring "ab" (s[1:3]): palindrome? ❌ no → skip ⏭️  
+  - Backtrack to [] 🔙
+
+  Step 1: try substring "aa" (s[0:2]): palindrome → ✅ yes  
+  - current_partition = ["aa"]  
+  - Recurse start_index=2 🔄
+
+  Step 2: start_index=2  
+  - Substring "b" (s[2:3]): palindrome → ✅ yes  
+  - current_partition = ["aa","b"]  
+  - Recurse start_index=3 (end) 🏁  
+  - Append ["aa","b"] to result ✔️  
+  - Backtrack to ["aa"] 🔙
+
+  Step 2 backtracked: no more substrings  
+  - Backtrack to [] 🔙
+
+  Step 1 backtracked: no more substrings
+
+  🎯 Final result: [["a","a","b"], ["aa","b"]]

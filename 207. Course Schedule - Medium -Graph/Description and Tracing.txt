@@ -1,0 +1,107 @@
+📘 LeetCode #207 - Course Schedule
+🔗 https://leetcode.com/problems/course-schedule/
+
+---
+
+🌳 Conceptual Tree View (Not actual graph, just for visual representation):
+
+        Course 0
+           ↑
+        Course 1
+           ↑
+        Course 2
+           ↑
+        Course 3
+
+This tree shows a chain of prerequisites. If a course requires another one before it, there's a directed edge pointing up.
+
+---
+
+🧩 Problem Statement:
+
+You are given `numCourses` labeled from `0` to `numCourses - 1` and a list of `prerequisites`, where `prerequisites[i] = [a, b]` means you must take course `b` before course `a`.
+
+Return `true` if you can finish all courses. Otherwise, return `false`.
+
+---
+
+💡 Example 1:
+Input:  
+numCourses = 2  
+prerequisites = [[1, 0]]  
+Output: true  
+Explanation: Take course 0 first, then course 1.
+
+💡 Example 2:
+Input:  
+numCourses = 2  
+prerequisites = [[1, 0], [0, 1]]  
+Output: false  
+Explanation: There is a cycle — course 0 depends on course 1 and vice versa.
+
+---
+
+🎯 Graph Visualization for Example 2 (Cycle Case):
+
+     0 → 1  
+     ↑    ↓  
+     ← ← ←
+
+This shows a cycle: 0 → 1 → 0
+
+---
+
+🪓 Brute Force (Not Practical):
+
+Try all topological orderings of the courses and check if prerequisites are satisfied. This is computationally infeasible for large graphs.
+
+⏱️ Time Complexity: O(N!)  
+🧠 Space Complexity: O(N)
+
+---
+
+🚀 Optimized Approach — Topological Sort via DFS & Cycle Detection
+
+✅ Strategy:
+- Model the course prerequisites as a directed graph.
+- Use a `visited` state tracker:  
+  - `UNVISITED (0)`  
+  - `VISITING (1)`  
+  - `VISITED (2)`
+- Perform DFS:
+  - If you revisit a node marked as VISITING → cycle exists → return False.
+  - Mark node as VISITING while exploring, then VISITED once all its neighbors are explored.
+
+⏱️ Time Complexity: O(N + E) — N = number of courses, E = number of edges
+🧠 Space Complexity: O(N + E) — for adjacency list and recursion stack
+
+🧠 Code Trace Example:
+
+Input:
+numCourses = 4
+prerequisites = [[1, 0], [2, 1], [3, 2]]
+
+Graph:
+
+Copy
+Edit
+0 → 1 → 2 → 3
+DFS on course 0:
+
+Mark 0 as VISITING → explore 1
+
+Mark 1 as VISITING → explore 2
+
+Mark 2 as VISITING → explore 3
+
+Mark 3 as VISITING → no prerequisites → mark 3 as VISITED
+
+Mark 2 as VISITED
+
+Mark 1 as VISITED
+
+Mark 0 as VISITED
+
+Result: No cycles → return True
+
+✅ Final Output: True (Courses can be completed if no cycle is present)

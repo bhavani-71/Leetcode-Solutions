@@ -1,0 +1,75 @@
+LeetCode #973 - K Closest Points to Origin  
+🔗 https://leetcode.com/problems/k-closest-points-to-origin/
+
+---
+
+🧩 Problem Statement:  
+Given an array of points where points[i] = [x_i, y_i] represents a point on the X-Y plane and an integer k, return the k closest points to the origin (0, 0).  
+The distance is calculated using the Euclidean distance: √(x² + y²).
+
+---
+
+💡 Example:  
+Input: points = [[1,3],[-2,2]], k = 1  
+Output: [[-2,2]]  
+Explanation:  
+The distance of (1,3) is √(1² + 3²) = √10.  
+The distance of (-2,2) is √((-2)² + 2²) = √8.  
+Since √8 < √10, (-2,2) is closer to the origin.
+
+---
+
+🪓 Brute Force Approach:  
+🔍 Idea:  
+- Compute distance for all points.  
+- Sort the points based on the distance.  
+- Return the first k points.  
+
+⏱️ Time Complexity: O(n log n) due to sorting all points.  
+🧠 Space Complexity: O(n).
+
+---
+
+🚀 Optimized Approach (Max Heap):  
+
+✅ Strategy:  
+- Use a max heap to keep track of the k closest points seen so far.  
+- For each point, calculate the squared distance (to avoid float operations).  
+- Push the negative distance along with point coordinates into the max heap.  
+- If the heap size exceeds k, pop the point with the largest distance (which will be at the root).  
+- At the end, the heap contains the k closest points.
+
+⏱️ Time Complexity: O(n log k) — each insertion/removal in heap is O(log k).  
+🧠 Space Complexity: O(k) — max heap stores k points.
+
+---
+
+🧠 Code Explanation:  
+- Define a helper function to calculate squared Euclidean distance.  
+- Iterate through each point, calculate distance, and add to the max heap.  
+- If heap size exceeds k, remove the farthest point.  
+- Return the points from the heap (without distances).
+
+
+🧠 Code Trace (Example):
+
+Input: points = [[1,3],[-2,2],[5,8]], k=2
+
+- max_heap = [] initially
+
+- Process (1,3), dist=10  
+  heap size < 2 → push (-10, 1, 3)  
+  heap = [(-10, 1, 3)]
+
+- Process (-2,2), dist=8  
+  heap size < 2 → push (-8, -2, 2)  
+  heap = [(-10, 1, 3), (-8, -2, 2)]
+
+- Process (5,8), dist=89  
+  heap full  
+  (-89, 5, 8) vs root (-10, 1, 3) → -89 < -10 (means dist 89 > 10) → do not replace
+
+- Final heap contains points (1,3) and (-2,2)  
+- Output: [(1,3), (-2,2)] (order can vary)
+
+Output: [(1,3), (-2,2)] (order can vary)

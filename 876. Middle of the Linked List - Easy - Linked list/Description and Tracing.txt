@@ -1,0 +1,69 @@
+LeetCode #876 - Middle of the Linked List  
+🔗 https://leetcode.com/problems/middle-of-the-linked-list/
+
+---
+
+🧩 Problem Statement:
+
+Given the head of a singly linked list, return the middle node of the linked list.
+
+If there are two middle nodes, return the second middle node.
+
+---
+
+💡 Example 1:  
+Input: head = [1,2,3,4,5]  
+Output: Node with value 3  
+Explanation: The middle node is 3.
+
+💡 Example 2:  
+Input: head = [1,2,3,4,5,6]  
+Output: Node with value 4  
+Explanation: There are two middle nodes 3 and 4, so return the second one.
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Approach:  
+- Traverse the entire linked list to count the number of nodes.  
+- Traverse again to the middle node (count // 2 + 1) and return it.
+
+⏱️ Time Complexity: O(n) — two passes through the list  
+🧠 Space Complexity: O(1) — constant extra space
+
+---
+
+🚀 Optimized Approach — Two Pointer Technique:
+
+✅ Strategy:  
+- Use two pointers, slow and fast, both starting at head.  
+- Move slow pointer by 1 node and fast pointer by 2 nodes in each iteration.  
+- When fast pointer reaches the end (or null), slow pointer will be at the middle node.
+
+⏱️ Time Complexity: O(n) — one pass through the list  
+🧠 Space Complexity: O(1) — constant extra space
+
+---
+
+🔎 Step-by-Step Trace (Example: head = [1, 2, 3, 4, 5]):
+
+Initialize:  
+- slow = 1 (head)  
+- fast = 1 (head)
+
+Iteration 1:  
+- slow moves to 2  
+- fast moves to 3
+
+Iteration 2:  
+- slow moves to 3  
+- fast moves to 5
+
+Iteration 3:  
+- fast.next is None → loop ends  
+- slow is at node with value 3 → middle node
+
+---
+
+✅ Final answer: Node with value 3

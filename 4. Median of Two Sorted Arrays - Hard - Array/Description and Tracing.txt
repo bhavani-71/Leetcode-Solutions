@@ -1,0 +1,38 @@
+description: |
+  📘 LeetCode: 4  
+  📌 Title: Median of Two Sorted Arrays  
+  🔗 Link: https://leetcode.com/problems/median-of-two-sorted-arrays/
+
+  🧩 Problem Statement:  
+  Given two sorted arrays, find the median of the combined sorted array in O(log(min(m, n))) time.
+
+  🧱 Components:  
+  - Input:  
+    - `arr1`: first sorted integer array  
+    - `arr2`: second sorted integer array  
+  - Output: Median value (float) of merged arrays  
+  - Method: Binary search on smaller array to partition arrays into halves  
+  - Sentinels: Use ±∞ for partition edges to handle boundaries
+
+  💡 Approach:  
+  - Swap arrays to ensure `arr1` is smaller  
+  - Use binary search on `arr1` to find partition index `i`  
+  - Calculate corresponding partition `j` in `arr2` such that left halves contain half the total elements  
+  - Check if max left elements ≤ min right elements for valid partition  
+  - If valid, median is average of max left and min right if total length even; else max left  
+  - Adjust binary search range if partition invalid
+
+  ⏱️ Time Complexity: O(log(min(m, n)))  
+  🧠 Space Complexity: O(1)
+
+  🔍 Detailed Code Trace Example:  
+  arr1 = [1, 3], arr2 = [2]  
+  - Initially, arr1 is smaller so proceed  
+  - Binary search range low=0, high=2  
+  - Iteration 1:  
+    - i=1, j=1  
+    - max_left_arr1=1, min_right_arr1=3  
+    - max_left_arr2=2, min_right_arr2=∞  
+    - Check: 1 ≤ ∞ and 2 ≤ 3 → valid  
+    - Total length odd (3), median = max(1, 2) = 2  
+  - Return 2.0

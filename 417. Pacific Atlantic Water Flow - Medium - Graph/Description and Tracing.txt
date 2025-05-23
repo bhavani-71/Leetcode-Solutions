@@ -1,0 +1,142 @@
+https://leetcode.com/problems/pacific-atlantic-water-flow/
+
+🧩 Problem Statement:
+
+You are given an `m x n` grid of heights representing an island where `heights[i][j]` is the height at cell `(i, j)`.  
+Water can flow from a cell to another one **only if the next cell has an equal or lower height** and is directly adjacent (up/down/left/right).
+
+Two oceans surround the island:
+- **Pacific Ocean** touches the left and top edges.
+- **Atlantic Ocean** touches the right and bottom edges.
+
+Return a list of coordinates where water can flow to **both the Pacific and Atlantic oceans**.
+
+---
+
+💡 Example:
+
+Input:  
+`heights = [[1,2,2,3,5], [3,2,3,4,4], [2,4,5,3,1], [6,7,1,4,5], [5,1,1,2,4]]`  
+
+Output:  
+`[[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]`
+
+Explanation:  
+- Water from these cells can flow both to the Pacific and Atlantic oceans.
+
+---
+
+🪓 Brute Force Approach:
+
+🔍 Idea:
+- For each cell, do DFS or BFS to see if water can reach both oceans.
+- This leads to repeated work and is inefficient.
+
+⏱️ Time Complexity: O((m × n)²)  
+🧠 Space Complexity: O(m × n)
+
+---
+
+🚀 Optimized Approach (Reverse DFS from oceans):
+
+✅ Strategy:
+- Instead of checking from every cell → "can water go to oceans?",  
+  check from oceans → "which cells can water reach?"
+- Perform **DFS starting from the Pacific** border and **DFS from Atlantic** border.
+- Track cells reachable by both → those are the required coordinates.
+
+✅ Steps:
+1. Define two sets `p` and `a` for Pacific and Atlantic reachable cells.
+2. From all border cells adjacent to the Pacific (top row and left col), run DFS and mark reachable cells.
+3. From all border cells adjacent to the Atlantic (bottom row and right col), run DFS and mark reachable cells.
+4. The intersection of the two sets gives the result.
+
+⏱️ Time Complexity: O(m × n) – Each cell is visited at most twice.  
+🧠 Space Complexity: O(m × n) for visited sets.
+
+---
+✅ Trace on smaller grid
+🧩 Trace with comparison values during DFS (using emojis for iterations):
+
+Input heights:
+[
+  [1, 2, 2, 3, 5],
+  [3, 2, 3, 4, 4],
+  [2, 4, 5, 3, 1],
+  [6, 7, 1, 4, 5],
+  [5, 1, 1, 2, 4]
+]
+
+---
+
+🔵 Starting DFS from Pacific side (top row and left column):
+
+🟢 At (0,0): height=1, prev height= -∞ (initial)  
+  ✔️ Add (0,0) to Pacific reachable.  
+  ↪️ Neighbors:  
+    🟡 (1,0): height=3 ≥ 1 → proceed.  
+    🟡 (0,1): height=2 ≥ 1 → proceed.
+
+🟢 At (1,0): height=3, prev=1  
+  ✔️ Add (1,0).  
+  ↪️ Neighbors:  
+    🔴 (2,0): height=2 < 3 → skip.  
+    🔴 (1,1): height=2 < 3 → skip.  
+    🔵 (0,0): already visited.
+
+🟢 At (0,1): height=2, prev=1  
+  ✔️ Add (0,1).  
+  ↪️ Neighbors:  
+    🟡 (1,1): height=2 ≥ 2 → proceed.  
+    🟡 (0,2): height=2 ≥ 2 → proceed.  
+    🔵 (0,0): visited.
+
+🟢 At (1,1): height=2, prev=2  
+  ✔️ Add (1,1).  
+  ↪️ Neighbors:  
+    🟡 (2,1): height=4 ≥ 2 → proceed.  
+    🟡 (1,2): height=3 ≥ 2 → proceed.  
+    🔵 (1,0): visited.  
+    🔵 (0,1): visited.
+
+🟢 At (2,1): height=4, prev=2  
+  ✔️ Add (2,1).  
+  ↪️ Neighbors:  
+    🟡 (3,1): height=7 ≥ 4 → proceed.  
+    🟡 (2,2): height=5 ≥ 4 → proceed.  
+    🔵 (1,1): visited.
+
+... continues similarly for all reachable cells.
+
+---
+
+🔴 Starting DFS from Atlantic side (bottom row and right column):
+
+🟢 At (4,4): height=4, prev= -∞ (initial)  
+  ✔️ Add (4,4).  
+  ↪️ Neighbors:  
+    🟡 (3,4): height=5 ≥ 4 → proceed.  
+    🔴 (4,3): height=2 < 4 → skip.
+
+🟢 At (3,4): height=5, prev=4  
+  ✔️ Add (3,4).  
+  ↪️ Neighbors:  
+    🔴 (2,4): height=1 < 5 → skip.  
+    🔴 (3,3): height=4 < 5 → skip.  
+    🔵 (4,4): visited.
+
+... continues similarly for all reachable cells.
+
+---
+
+🔍 Comparison condition used for visiting neighbors:
+For current cell height `H_curr` and neighbor cell height `H_next`, proceed if:  
+`H_next >= H_curr`  
+
+---
+
+🏁 **Result:**  
+All cells reachable from both Pacific and Atlantic DFS sets are collected. These represent coordinates from which water can flow to both oceans.
+
+Output:  
+[[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]

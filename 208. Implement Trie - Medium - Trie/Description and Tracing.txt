@@ -1,0 +1,131 @@
+Trie (Prefix Tree) - LeetCode #208 - Implement Trie (Prefix Tree)
+https://leetcode.com/problems/implement-trie-prefix-tree/
+
+Given a set of strings, design a data structure that supports the following operations efficiently:
+- insert(word): Insert a word into the data structure.
+- search(word): Return true if the exact word is in the data structure.
+- startsWith(prefix): Return true if there is any word that starts with the given prefix.
+
+🪓 Brute Force Approach
+
+🔍 Approach:
+Store all inserted words in a list.
+- For search(word): Check if the word exists in the list.
+- For startsWith(prefix): Iterate through all words and check if any starts with the prefix.
+
+🧠 Pseudocode:
+
+words = []
+
+insert(word):
+    words.append(word)
+
+search(word):
+    return word in words
+
+startsWith(prefix):
+    for w in words:
+        if w.startswith(prefix):
+            return True
+    return False
+
+⏱️ Time Complexity:
+- insert: O(1) (append to list)
+- search: O(N * m) — N is number of words, m is average word length (checking each word)
+- startsWith: O(N * p) — p is prefix length (check prefix for each word)
+
+🧠 Space Complexity:
+- O(N * m) — storing all words explicitly
+
+✅ Optimized Approach Using Trie (Prefix Tree)
+
+🔍 Approach:
+Use a tree data structure where each node contains children representing characters and a boolean to mark end of word.
+- insert(word): Traverse or create nodes for each character; mark the final node as word end.
+- search(word): Traverse nodes; return true only if last node is word end.
+- startsWith(prefix): Traverse nodes; if traversal completes, prefix exists.
+
+🧠 Pseudocode:
+
+class TrieNode:
+    children = dict()
+    is_word_end = False
+
+insert(word):
+    node = root
+    for char in word:
+        if char not in node.children:
+            node.children[char] = new TrieNode()
+        node = node.children[char]
+    node.is_word_end = True
+
+search(word):
+    node = root
+    for char in word:
+        if char not in node.children:
+            return False
+        node = node.children[char]
+    return node.is_word_end
+
+startsWith(prefix):
+    node = root
+    for char in prefix:
+        if char not in node.children:
+            return False
+        node = node.children[char]
+    return True
+
+⏱️ Time Complexity:
+- All operations run in O(m), where m = length of the input word/prefix.
+
+🧠 Space Complexity:
+- O(N * m) — space needed to store all nodes for N words of average length m.
+
+✅ Code Trace (Trie Approach)
+
+Input sequence: insert("apple"), search("apple"), search("app"), startsWith("app"), insert("app"), search("app")
+insert("apple")
+
+Start at root.
+
+ 1. insert("apple")
+     - Start at root.
+     - Insert 'a': No child 'a', create node 'a'.
+     - Insert 'p': No child 'p' under 'a', create node 'p'.
+     - Insert 'p': No child 'p' under first 'p', create node 'p'.
+     - Insert 'l': No child 'l' under second 'p', create node 'l'.
+     - Insert 'e': No child 'e' under 'l', create node 'e'.
+     - Mark node 'e' as end of word.
+
+  2. search("apple")
+     - Start at root.
+     - Traverse 'a' → exists.
+     - Traverse 'p' → exists.
+     - Traverse 'p' → exists.
+     - Traverse 'l' → exists.
+     - Traverse 'e' → exists and is end of word → return True.
+
+  3. search("app")
+     - Start at root.
+     - Traverse 'a' → exists.
+     - Traverse 'p' → exists.
+     - Traverse 'p' → exists, but node is NOT marked as end of word → return False.
+
+  4. startsWith("app")
+     - Start at root.
+     - Traverse 'a' → exists.
+     - Traverse 'p' → exists.
+     - Traverse 'p' → exists → traversal successful → return True.
+
+  5. insert("app")
+     - Start at root.
+     - Traverse 'a' → exists.
+     - Traverse 'p' → exists.
+     - Traverse 'p' → exists.
+     - Mark node 'p' as end of word.
+
+  6. search("app")
+     - Start at root.
+     - Traverse 'a' → exists.
+     - Traverse 'p' → exists.
+     - Traverse 'p' → exists and is now marked as end of word → return True.

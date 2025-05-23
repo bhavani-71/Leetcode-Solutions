@@ -1,0 +1,62 @@
+Description: |
+  📘 Problem Statement:
+  You are given an integer array `nums`, and two integers `indexDiff` and `valueDiff`.  
+  Return `true` if there exist **two distinct indices** `i` and `j` in the array such that:  
+  - 🧍 abs(i - j) <= indexDiff  
+  - 💵 abs(nums[i] - nums[j]) <= valueDiff  
+
+  Otherwise, return `false`.
+
+  🧪 Example:
+  Input: nums = [1, 2, 3, 1], indexDiff = 3, valueDiff = 0  
+  Output: true  
+  Explanation: nums[0] == nums[3], abs(0 - 3) = 3 <= 3, abs(1 - 1) = 0 <= 0
+
+  🔨 Brute Force Approach:
+  - For every pair of indices (i, j), check:
+    - if abs(i - j) <= indexDiff
+    - and abs(nums[i] - nums[j]) <= valueDiff
+  - If both conditions are true, return true.
+  - Otherwise, return false after checking all pairs.
+
+  🧮 Time Complexity (Brute Force): O(n²)  
+  🚀 Space Complexity (Brute Force): O(1)
+
+  ⚙️ Optimized Approach (Bucket Sort):
+  - Use a sliding window of size `indexDiff`.
+  - Define a bucket size = `valueDiff + 1`, which ensures any two values in the same bucket differ by at most `valueDiff`.
+  - For each number:
+    - 🪣 Check its bucket. If already present → ✅ return true.
+    - 🔍 Check neighbors (bucket -1 and +1). If close enough → ✅ return true.
+    - ➕ Add current number to its bucket.
+    - ❌ Remove numbers outside the window (`i - indexDiff`).
+
+  🧮 Time Complexity (Optimized): O(n)  
+  🚀 Space Complexity (Optimized): O(min(n, indexDiff))
+
+
+  🧵 Detailed Optimized Trace:
+  nums = [1, 5, 9, 1], indexDiff = 2, valueDiff = 3  
+  width = 4 (valueDiff + 1)  
+  bucket = {}
+
+  i = 0 ➡️ num = 1  
+    bucket_id = 0  
+    ✅ Insert into bucket 0 → {0: 1}
+
+  i = 1 ➡️ num = 5  
+    bucket_id = 1  
+    ✅ Insert into bucket 1 → {0: 1, 1: 5}
+
+  i = 2 ➡️ num = 9  
+    bucket_id = 2  
+    ✅ Insert into bucket 2 → {0: 1, 1: 5, 2: 9}
+
+  i = 3 ➡️ num = 1  
+    Remove nums[0]=1 from bucket 0 → {1: 5, 2: 9}  
+    bucket_id = 0  
+    ✅ Insert into bucket 0 → {0: 1, 1: 5, 2: 9}
+
+  ✅ No bucket match found  
+  Final Output: false
+

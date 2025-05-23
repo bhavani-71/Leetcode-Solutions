@@ -1,0 +1,94 @@
+description: |
+  📘 LeetCode: Word Search II  
+  📌 Title: Word Search II  
+  🔗 Link: https://leetcode.com/problems/word-search-ii/
+
+  🧩 Problem Statement:  
+  Given a 2D board of letters and a list of words, find all words that can be formed from letters of sequentially adjacent cells (horizontally or vertically). Each cell can be used only once per word.
+
+  🧱 Components:  
+  - Input:  
+    - `board`: 2D list of characters  
+    - `words`: list of strings to search  
+  - Output: List of words found on the board  
+  - Data structure: Trie (prefix tree) to efficiently check word prefixes and existence  
+  - DFS + Backtracking to explore all possible letter paths on board
+
+  💡 Brute Force Approach:  
+  - Search each word independently on the board using DFS  
+  - ❌ Inefficient for large inputs due to repeated work
+
+  🚀 Optimized Approach (Used in Code):  
+  - Build a Trie with all words for fast prefix and word existence checks  
+  - For each cell in the board, perform DFS searching prefixes in Trie  
+  - Prune paths not present in Trie children  
+  - Mark visited cells to avoid reuse during DFS  
+  - Add words to result set when end of word reached in Trie  
+  - Restore cell after DFS to enable other paths
+
+  ⏱️ Time Complexity: O(M * 4 * 3^(L-1)) where M=board cells, L=max word length  
+  🧠 Space Complexity: O(N * L) for Trie + O(L) recursion stack
+
+  🔍 Detailed Code Trace Example:  
+  Board = [
+    ['o','a','a','n'],
+    ['e','t','a','e'],
+    ['i','h','k','r'],
+    ['i','f','l','v']
+  ]
+  Words = ["oath", "pea", "eat", "rain"]
+
+  1️⃣ Build Trie:  
+    - Insert "oath": o → a → t → h (mark h as end of word)  
+    - Insert "pea": p → e → a (mark a as end of word)  
+    - Insert "eat": e → a → t (mark t as end of word)  
+    - Insert "rain": r → a → i → n (mark n as end of word)
+
+  2️⃣ Start DFS from each board cell:
+
+    - From (0,0) 'o':  
+      - Matches Trie root children → proceed  
+      - Mark board[0][0] = '#' (visited)  
+      - Current word = "o"  
+      - Explore neighbors: (1,0), (0,1), out-of-bounds others ignored  
+      
+      - At (1,0) 'e': 'e' not in 'o' node children → backtrack  
+      - At (0,1) 'a': 'a' in 'o' node children → proceed  
+        - Mark board[0][1] = '#'  
+        - Current word = "oa"  
+        - Explore neighbors: (1,1), (0,2), (0,0), (-1,1)  
+        
+        - At (1,1) 't': 't' in 'a' node children → proceed  
+          - Mark board[1][1] = '#'  
+          - Current word = "oat"  
+          - Explore neighbors: (2,1), (1,2), (1,0), (0,1)  
+          
+          - At (2,1) 'h': 'h' in 't' node children → proceed  
+            - Mark board[2][1] = '#'  
+            - Current word = "oath"  
+            - 'h' node isWord=True → Add "oath" to result set  
+            - Explore neighbors but no further children → backtrack  
+          - Backtrack from (2,1)  
+          
+          - Backtrack from (1,1)  
+        
+        - At (0,2) 'a': 'a' not in 'a' node children → backtrack  
+        - Backtrack from (0,1)  
+      
+      - Backtrack from (0,0)
+
+    - From (0,1) 'a': no 'a' at Trie root → skip  
+    - From (0,2) 'a': no 'a' at Trie root → skip  
+    - From (0,3) 'n': no 'n' at Trie root → skip  
+    - From (1,0) 'e': 'e' in Trie root → proceed for "eat"  
+      - Similar DFS as above leads to finding "eat"  
+    - From other cells similarly check for "pea", "rain"
+
+  3️⃣ Result after full board traversal: ["oath", "eat"]
+
+  Explanation:  
+  - "oath" found via path (0,0) → (0,1) → (1,1) → (2,1)  
+  - "eat" found via path (1,0) → (1,1) → (1,2)  
+  - "pea" and "rain" not found on the board
+
+  Final Output: ["oath", "eat"]

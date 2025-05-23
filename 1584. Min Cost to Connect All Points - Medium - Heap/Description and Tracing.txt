@@ -1,0 +1,83 @@
+https://leetcode.com/problems/min-cost-to-connect-all-points/description/
+
+🧩 Problem Statement:
+
+You are given `n` points in a 2D plane, where each point is represented as [xi, yi].  
+Return the minimum total cost to connect all points such that there is exactly one simple path between any two points.  
+The cost to connect two points is the Manhattan distance: |xi - xj| + |yi - yj|
+
+---
+
+🪓 Brute Force Approach (Kruskal's Algorithm with Union-Find):
+
+🔍 Approach:
+- Compute all pairwise edges with their Manhattan distances.
+- Sort edges by cost.
+- Use Union-Find to avoid cycles.
+- Add edges to MST until n-1 edges are included.
+
+⏱️ Time Complexity: O(n² log n) due to sorting all edges.  
+🧠 Space Complexity: O(n²) for edge list and O(n) for DSU.
+
+---
+
+💡 Optimized Approach (Prim's Algorithm using Min-Heap):
+
+✅ Strategy:
+- Treat points as graph nodes.
+- Use Prim’s algorithm: Grow MST from one point.
+- Maintain min-heap of (cost, next_node) for unvisited neighbors.
+- Pick the cheapest edge connecting a new point.
+
+⏱️ Time Complexity: O(n² log n)  
+🧠 Space Complexity: O(n) for heap and visited set
+
+---
+
+🚀 Trace (Example):
+
+Input: points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
+
+Initial State:
+visited = {}  
+min_heap = [(0,0)]  
+total_cost = 0
+
+🌀 Iteration 1:
+Pop (0,0) ➤ Add point 0  
+Push:  
+  - (0 to 1): 4  
+  - (0 to 2): 13  
+  - (0 to 3): 7  
+  - (0 to 4): 7  
+min_heap = [(4,1), (7,3), (13,2), (7,4)]
+
+🌀 Iteration 2:
+Pop (4,1) ➤ Add point 1 ➤ total_cost = 4  
+Push:
+  - (1 to 2): 9  
+  - (1 to 3): 3  
+  - (1 to 4): 7  
+min_heap = [(3,3), (7,3), (13,2), (7,4), (9,2), (7,4)]
+
+🌀 Iteration 3:
+Pop (3,3) ➤ Add point 3 ➤ total_cost = 7  
+Push:
+  - (3 to 2): 9  
+  - (3 to 4): 2  
+min_heap = [(2,4), (4,1), (9,2), (13,2), (7,4), (9,2)]
+
+🌀 Iteration 4:
+Pop (2,4) ➤ Add point 4 ➤ total_cost = 9  
+Push:
+  - (4 to 2): 14  
+min_heap = [(9,2), (9,2), (13,2), (14,2)]
+
+🌀 Iteration 5:
+Pop (9,2) ➤ Add point 2 ➤ total_cost = 18  
+
+✅ All points visited ➤ Return total_cost = 18
+
+---
+
+✅ Final Answer: 18

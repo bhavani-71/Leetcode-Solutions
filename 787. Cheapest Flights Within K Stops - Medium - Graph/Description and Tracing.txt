@@ -1,0 +1,90 @@
+https://leetcode.com/problems/cheapest-flights-within-k-stops/
+
+🧩 Problem Statement:
+
+Given `n` cities and a list of flights represented as `[from, to, price]`, find the cheapest price from city `src` to city `dst` with at most `k` stops. Return -1 if no such route exists.
+
+---
+
+🪓 Brute Force Approach (DFS with pruning):
+
+🔍 Approach:
+- Explore all possible paths from `src` to `dst` using DFS.
+- Track current cost and number of stops.
+- If stops exceed `k+1`, backtrack.
+- Keep updating the minimum cost found.
+- This approach tries every path up to `k` stops and keeps the minimum cost.
+
+⏱️ Time Complexity: Exponential in worst case, O(n^k), since all paths up to k stops are explored.  
+🧠 Space Complexity: O(n) for recursion stack in worst case.
+
+---
+
+💡 Optimized Approach (BFS with level-wise relaxation):
+
+✅ Strategy:
+- Build adjacency list graph from flights.
+- Use BFS where each level corresponds to the number of stops.
+- Maintain a `dist` array for minimum cost to each city.
+- At each stop level, relax edges and update costs if a cheaper path is found.
+- Use a temporary array to avoid premature updates in the same level.
+- Stop after `k+1` levels and return the cost to `dst` if reachable.
+
+⏱️ Time Complexity: O(k * E), where E is number of flights.  
+🧠 Space Complexity: O(V + E), for graph and distance arrays.
+
+---
+
+🚀 Code Trace for example input:
+
+n = 4  
+flights = [[0,1,100],[1,2,100],[2,3,100],[0,3,500]]  
+src = 0, dst = 3, k = 1  
+
+Initial:  
+dist = [0, ∞, ∞, ∞]  
+q = [(0,0)]  
+stops = 0
+
+---
+
+🔵 stops = 0 (start city, no stops yet):
+
+size = 1  
+temp = [0, ∞, ∞, ∞]
+
+Pop (0,0):  
+- neighbors:  
+  - (1,100): new_cost = 0+100=100 < ∞ → temp[1]=100, enqueue (1,100)  
+  - (3,500): new_cost = 0+500=500 < ∞ → temp[3]=500, enqueue (3,500)
+
+dist = temp = [0, 100, ∞, 500]  
+q = [(1,100), (3,500)]  
+stops = 1
+
+---
+
+🔵 stops = 1 (one stop allowed):
+
+size = 2  
+temp = [0, 100, ∞, 500]
+
+Pop (1,100):  
+- neighbors:  
+  - (2,100): new_cost = 100+100=200 < ∞ → temp[2]=200, enqueue (2,200)
+
+Pop (3,500):  
+- neighbors: none
+
+dist = temp = [0, 100, 200, 500]  
+q = [(2,200)]  
+stops = 2 (exceeds k, loop ends)
+
+---
+
+🏁 Final answer = dist[3] = 500 (cheapest price within 1 stop)
+
+---
+
+This BFS approach ensures stops ≤ k and costs are updated level by level.  
+If destination unreachable within k stops, returns -1.

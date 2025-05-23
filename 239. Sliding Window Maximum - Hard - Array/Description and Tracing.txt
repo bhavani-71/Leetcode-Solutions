@@ -1,0 +1,70 @@
+LeetCode: 239  
+Title: Sliding Window Maximum  
+Link: https://leetcode.com/problems/sliding-window-maximum/
+
+---
+
+🧩 Problem Statement:  
+Given an integer array nums and a sliding window size k, find the maximum value in each sliding window as it moves from left to right across the array.
+
+---
+
+💡 Example:  
+Input: nums = [1,3,-1,-3,5,3,6,7], k = 3  
+Output: [3,3,5,5,6,7]  
+
+---
+
+🪓 Brute Force Approach:  
+- For each window, iterate through the k elements to find max.  
+- Time Complexity: O(n*k), inefficient for large n.
+
+---
+
+🚀 Optimized Approach (Deque):  
+- Use a deque to store indices of elements in decreasing order of their values.  
+- Remove indices from the front if they're out of the window.  
+- Remove smaller elements from the back since they're useless.  
+- The front of the deque always stores the index of the max element of the current window.  
+- Time Complexity: O(n), Space Complexity: O(k).
+
+---
+
+🔍 Code Trace (nums=[1,3,-1,-3,5,3,6,7], k=3):
+
+i=0 (num=1):  
+q=[] → append 0 → q=[0]  
+
+i=1 (num=3):  
+nums[q[-1]]=1 < 3 → pop 0  
+append 1 → q=[1]  
+
+i=2 (num=-1):  
+nums[q[-1]]=3 > -1 → append 2 → q=[1,2]  
+Window complete → max = nums[1]=3  
+
+i=3 (num=-3):  
+nums[q[-1]]=-1 > -3 → append 3 → q=[1,2,3]  
+Window: indices [1,2,3], max = nums[1]=3  
+
+i=4 (num=5):  
+Remove indices out of window (q[0]=1, i-k=1 → keep 1)  
+Pop smaller nums from back: -3, -1, 3 all less than 5 → pop 3, 2, 1  
+append 4 → q=[4]  
+max = nums[4]=5  
+
+i=5 (num=3):  
+nums[q[-1]]=5 > 3 → append 5 → q=[4,5]  
+max = nums[4]=5  
+
+i=6 (num=6):  
+Pop smaller from back: 3, 5 less than 6 → pop 5,4  
+append 6 → q=[6]  
+max = nums[6]=6  
+
+i=7 (num=7):  
+Pop smaller from back: 6 < 7 → pop 6  
+append 7 → q=[7]  
+max = nums[7]=7  
+
+Result: [3,3,5,5,6,7]

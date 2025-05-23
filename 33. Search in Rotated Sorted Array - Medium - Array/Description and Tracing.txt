@@ -1,0 +1,62 @@
+LeetCode: 33  
+Title: Search in Rotated Sorted Array  
+Link: https://leetcode.com/problems/search-in-rotated-sorted-array/
+
+---
+
+🧩 Problem Statement:  
+Given a sorted array that has been rotated at an unknown pivot, and a target value, return the index of the target if it exists in the array; otherwise, return -1. The array contains no duplicates.
+
+---
+
+💡 Example:  
+Input: nums = [4,5,6,7,0,1,2], target = 0  
+Output: 4
+
+---
+
+🪓 Brute Force Approach:  
+- Linear search over the array.  
+- Time complexity: O(n), space complexity: O(1).
+
+---
+
+🚀 Optimized Approach (Modified Binary Search):  
+- Use binary search by checking which part (left or right) of the current range is sorted.  
+- If the target lies within the sorted part, continue searching there; otherwise, search the other part.  
+- Time complexity: O(log n), space complexity: O(1).
+
+---
+
+🔍 Code Trace:
+
+Input array: [6,7,0,1,2,4,5], target = 2
+
+Initial pointers:
+left = 0, right = 6
+
+Iteration 1:
+mid = 0 + (6 - 0)//2 = 3
+nums[mid] = 1
+Left side nums[left] to nums[mid]: [6,7,0,1] → Not fully sorted because 6 > 1, so right side must be sorted.
+Right side nums[mid] to nums[right]: [1,2,4,5] → Sorted
+Check if target 2 is in [1..5]:
+Yes, 1 <= 2 <= 5 → Search right side.
+Update left = mid + 1 = 4, right = 6
+
+Iteration 2:
+left = 4, right = 6
+mid = 4 + (6 - 4)//2 = 5
+nums[mid] = 4
+Left side nums[left] to nums[mid]: [2,4] → Sorted
+Check if target 2 is in [2..4]:
+Yes, 2 <= 2 <= 4 → Search left side.
+Update left = 4, right = mid - 1 = 4
+
+Iteration 3:
+left = 4, right = 4
+mid = 4 + (4 - 4)//2 = 4
+nums[mid] = 2
+Target found at index 4 → Return 4
+
+Final answer: 4

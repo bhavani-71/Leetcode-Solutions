@@ -1,0 +1,85 @@
+LeetCode: 322  
+Title: Coin Change  
+Link: https://leetcode.com/problems/coin-change/  
+
+---
+
+🧩 Problem Statement:
+
+You are given an integer array `coins` representing different denominations of coins and an integer `amount` representing a total amount of money.
+
+Return the **fewest number of coins** that you need to make up that amount. If that amount cannot be made up by any combination of the coins, return `-1`.
+
+You may assume that you have an **infinite number of each kind** of coin.
+
+---
+
+💡 Example:
+
+Input:
+coins = [1, 2, 5], amount = 11
+
+Output:
+3
+
+Explanation:
+11 = 5 + 5 + 1 → uses 3 coins.
+
+---
+
+🪓 Brute Force Approach (Recursion):
+
+🔍 Idea:
+- Try every combination of coins recursively by subtracting each coin from the amount.
+- Base case: if amount is 0, return 0.
+- If amount is negative, return inf.
+- Use the result of subproblems to build the solution.
+
+⏱️ Time Complexity: O(S^n), where S is the amount and n is the number of coins  
+🧠 Space Complexity: O(S) — due to recursion depth
+
+⚠️ This approach is extremely inefficient for larger inputs due to overlapping subproblems.
+
+---
+
+🚀 Optimized Approach (Dynamic Programming - Bottom-Up):
+
+✅ Strategy:
+- Use a 1D DP array where `dp[i]` stores the minimum number of coins to make amount `i`.
+- Initialize `dp[0] = 0` (zero coins needed for amount 0).
+- For each coin, update `dp[i] = min(dp[i], dp[i - coin] + 1)` for all valid amounts.
+- If `dp[amount]` is still infinity after processing, return -1.
+
+⏱️ Time Complexity: O(n * amount), where n = number of coin denominations  
+🧠 Space Complexity: O(amount)
+
+---
+
+✅ Code Trace (Example: coins = [1,2,5], amount = 11):
+
+coins = [1, 2, 5], amount = 11
+
+Initial dp array:
+[0, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf]
+
+Step-by-step after each coin:
+
+After using coin = 1:
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+After using coin = 2:
+For amount 2: min(2, dp[0]+1) = 1 🔄
+For amount 3: min(3, dp[1]+1) = 2 🔄
+For amount 4: min(4, dp[2]+1) = 2 🔄
+... up to amount 11
+Updated dp: [0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6]
+
+After using coin = 5:
+For amount 5: min(3, dp[0]+1) = 1 🔄
+For amount 6: min(3, dp[1]+1) = 2 🔄
+For amount 7: min(4, dp[2]+1) = 2 🔄
+
+...
+Final dp: [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 3]
+
+🔚 Final Result: dp[11] = 3 → Minimum coins needed = 3 (5+5+1)

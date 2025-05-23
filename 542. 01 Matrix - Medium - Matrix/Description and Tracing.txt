@@ -1,0 +1,94 @@
+LeetCode #542 - 01 Matrix  
+🔗 https://leetcode.com/problems/01-matrix/
+
+---
+
+🧩 Problem Statement:  
+Given a matrix consisting of 0s and 1s, return a matrix where each cell contains the distance to the nearest 0.  
+Distance is measured in terms of the number of steps needed to move up, down, left, or right.
+
+---
+
+💡 Example:  
+Input:  
+[[0,0,0],  
+ [0,1,0],  
+ [1,1,1]]  
+
+Output:  
+[[0,0,0],  
+ [0,1,0],  
+ [1,2,1]]  
+
+---
+
+🪓 Brute Force Approach:  
+🔍 Idea: For each cell with 1, run BFS or DFS to find the nearest 0.  
+⏱️ Time Complexity: O(m^2 * n^2) — inefficient for large matrices.  
+
+---
+
+🚀 Optimized Approach (Multi-source BFS):  
+
+✅ Strategy:  
+- Initialize a result matrix with -1 for all cells.  
+- Put all cells containing 0 into a BFS queue with distance 0 (starting points).  
+- Perform BFS from all zero cells simultaneously, updating distances for neighboring cells not yet visited.  
+- This ensures each cell’s distance is calculated as the shortest distance to any zero.
+
+⏱️ Time Complexity: O(m*n) — each cell visited once.  
+🧠 Space Complexity: O(m*n) — for the result matrix and BFS queue.
+
+---
+
+🧠 Code Explanation:  
+- Create a distance matrix initialized with -1 for all cells except cells with 0, which are set to 0.  
+- Add all zero cells’ coordinates to the BFS queue.  
+- While queue not empty, pop a cell and explore its four neighbors (up, down, left, right).  
+- If neighbor has not been visited (distance == -1), set its distance to current cell’s distance + 1 and enqueue it.  
+- Return the distance matrix after BFS completes.
+
+---
+
+✅ Detailed Code Trace (Example Input):  
+Input matrix:  
+[[0,0,0],  
+ [0,1,0],  
+ [1,1,1]]
+
+Initialization:  
+- distance_matrix = [[0,0,0], [0,-1,0], [-1,-1,-1]]  
+- bfs_queue contains all zero cells: [(0,0), (0,1), (0,2), (1,0), (1,2)]
+
+Step 1: Process (0,0)  
+- neighbors: (0,1) already visited, (1,0) already visited  
+- no new cells updated
+
+Step 2: Process (0,1)  
+- neighbors: (1,1) distance = -1 → update to 1 and enqueue (1,1)
+
+Step 3: Process (0,2)  
+- neighbors: (1,2) visited
+
+Step 4: Process (1,0)  
+- neighbors: (2,0) distance = -1 → update to 1 and enqueue (2,0)
+
+Step 5: Process (1,2)  
+- neighbors: (2,2) distance = -1 → update to 1 and enqueue (2,2)
+
+Step 6: Process (1,1)  
+- neighbors: (2,1) distance = -1 → update to 2 and enqueue (2,1)
+
+Step 7: Process (2,0)  
+- neighbors: no new updates
+
+Step 8: Process (2,2)  
+- neighbors: no new updates
+
+Step 9: Process (2,1)  
+- neighbors: no new updates
+
+Final distance_matrix:  
+[[0,0,0],  
+ [0,1,0],  
+ [1,2,1]]
